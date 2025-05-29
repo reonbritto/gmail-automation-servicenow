@@ -1,0 +1,25 @@
+response_task:
+  description: >
+    Fetch unread emails from Gmail (already done in the before_kickoff step and saved to 'output/fetched_emails.json').
+
+    For each email:
+      - Analyze the content and determine if a response is needed.
+      - Generate a response ONLY for important personal or business emails that require your attention or input.
+      - DO NOT generate responses for newsletters, promotions, automated notifications, or emails that do not need a reply.
+
+    For emails requiring a response:
+      1. Draft a professional and appropriate reply.
+      2. Maintain the original tone and context.
+      3. Address all questions or requests in the email.
+      4. Include a suitable signature (e.g., "Best regards, Reon").
+      5. Use the 'save_email_draft' tool with:
+         - subject: Add "Re: " to the original subject if not already present
+         - body: Your response
+         - recipient: The sender's email address
+         - thread_info: Include if responding to a thread
+
+    Your final answer should be a summary of the emails you processed, indicating which ones received draft responses and which did not require a response.
+  expected_output: >
+    A report of draft emails saved to the drafts folder, with information about which emails received responses and which did not require a response. Each entry should include the email ID, subject, recipient, and whether a draft was saved.
+  agent: response_generator
+  output_file: output/response_report.json
