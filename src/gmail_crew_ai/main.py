@@ -48,9 +48,69 @@ def run():
         else:
             print("\nCrew execution completed but no results were returned.")
             return 0  # Still consider this a success
+    except ImportError as e:
+        if "servicenow_email_analyst" in str(e) or "agents" in str(e):
+            print("\n❌ Configuration Error:")
+            print("Missing agent configuration. Please ensure all agents are defined in:")
+            print("  src/gmail_crew_ai/config/agents.yaml")
+            print("\nRequired agents:")
+            print("  - response_generator")
+            print("  - servicenow_email_analyst") 
+            print("  - response_strategist")
+            print("  - content_generator")
+            print("  - quality_reviewer")
+            print("  - workflow_coordinator")
+            return 1
+        else:
+            print(f"\n❌ Import Error: {e}")
+            return 1
+    except FileNotFoundError as e:
+        print(f"\n❌ File Not Found: {e}")
+        print("Please ensure all configuration files exist in src/gmail_crew_ai/config/")
+        return 1
     except Exception as e:
-        print(f"\nError: {e}")
-        return 1  # Return error code
+        print(f"\n❌ Unexpected Error: {e}")
+        print("Please check your configuration and try again.")
+        return 1
+
+def train():
+    """Train the crew for 'n' iterations."""
+    try:
+        load_dotenv()
+        n_iterations = int(input("Enter the number of training iterations: "))
+        GmailCrewAi().crew().train(n_iterations=n_iterations)
+        print(f"\nTraining completed for {n_iterations} iterations! 🎓")
+        return 0
+    except Exception as e:
+        print(f"\n❌ Training Error: {e}")
+        return 1
+
+def replay():
+    """Replay the crew execution from a specific task."""
+    try:
+        load_dotenv()
+        task_id = input("Enter the task ID to replay from: ")
+        GmailCrewAi().crew().replay(task_id=task_id)
+        print(f"\nReplay completed from task {task_id}! 🔄")
+        return 0
+    except Exception as e:
+        print(f"\n❌ Replay Error: {e}")
+        return 1
+
+def test():
+    """Test the crew setup and configuration."""
+    try:
+        load_dotenv()
+        print("🧪 Testing crew configuration...")
+        crew = GmailCrewAi().crew()
+        print("✅ Crew initialized successfully!")
+        print(f"📊 Agents: {len(crew.agents)}")
+        print(f"📋 Tasks: {len(crew.tasks)}")
+        print("🎯 Configuration test passed!")
+        return 0
+    except Exception as e:
+        print(f"\n❌ Test Failed: {e}")
+        return 1
 
 if __name__ == "__main__":
     sys.exit(run())  # Use the return value as the exit code
