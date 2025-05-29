@@ -1,3 +1,7 @@
+# NOTE: This file provides general reference information for the ServiceNow developer (Alex Chen).
+# The AI email assistant will primarily use its underlying Large Language Model (e.g., Gemini)
+# capabilities for understanding context and generating responses, referring to this file for high-level background if needed.
+
 # DEVELOPER PROFILE
 Developer Name: Alex Chen (ServiceNow Developer)
 Team: Platform Engineering
@@ -67,46 +71,17 @@ Headers:
   - Content-Type: application/json
 Note: Always use a dedicated integration user with minimal necessary roles.
 
-# COMMUNICATION STYLE (for drafted emails)
+# COMMUNICATION STYLE (General Preference for Drafts)
 Tone: Technical, professional, and collaborative.
-Signature for Drafts:
+Signature for Drafts (General Style):
   Best regards,
   Alex Chen
   ServiceNow Developer
   Innovate Solutions Ltd.
 
-# EMAIL TRIAGE GUIDELINES (for agent)
-High Priority Keywords: "URGENT", "Production Issue", "Build Failed", "Critical Defect", "Security Alert"
-Medium Priority: "Code Review Request", "API Question", "Deployment Notification", "Test Results"
-Low Priority: General announcements, non-critical system updates, FYI emails.
-Ignore: Marketing, newsletters (unless ServiceNow tech-specific), out-of-office replies.
-
-# RESPONSE TEMPLATES (Developer Context)
-Acknowledging a Technical Query:
-  Subject: Re: [Original Subject]
-  Body:
-  Hi [Sender Name],
-
-  Thanks for reaching out regarding [topic of query].
-  I'll look into this and get back to you with an update or solution by [EOD/Tomorrow AM/Specific Timeframe].
-
-  [Signature]
-
-Code Review Acknowledgment:
-  Subject: Re: Code Review for [Feature/Story ID]
-  Body:
-  Hi [Sender Name],
-
-  Thanks for the feedback on [Feature/Story ID]. I'll review your comments and address them.
-  I'll let you know if I have any questions.
-
-  [Signature]
-
-Deployment Notification Acknowledgment:
-  Subject: Re: Deployment Notification: [Change ID/Release Name]
-  Body:
-  Hi Team,
-
-  Noted. Thanks for the update on the [Change ID/Release Name] deployment.
-
-  [Signature]
+# GENERAL EMAIL HANDLING NOTES (For User Reference)
+# The AI will use its judgment for triaging and response based on email content and its ServiceNow knowledge.
+# High Priority Keywords (Examples for user awareness): "URGENT", "Production Issue", "Build Failed", "Critical Defect", "Security Alert"
+# Medium Priority (Examples for user awareness): "Code Review Request", "API Question", "Deployment Notification", "Test Results"
+# Low Priority (Examples for user awareness): General announcements, non-critical system updates, FYI emails.
+# Typically Ignore: Marketing, general newsletters, out-of-office replies unless directly relevant to development tasks.

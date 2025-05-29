@@ -1,14 +1,14 @@
 # ServiceNow Developer Email Assistant with CrewAI
 
-This project uses CrewAI to assist ServiceNow developers by managing and responding to development-related emails. It can help draft replies to technical queries, summarize code review feedback, or acknowledge deployment notifications based on a configurable knowledge base.
+This project uses CrewAI to assist ServiceNow developers by managing and responding to development-related emails. It leverages an advanced Large Language Model (e.g., Gemini) to understand email context, draft replies to technical queries, summarize code review feedback, or acknowledge deployment notifications. The `knowledge/user_preference.txt` file serves as a general reference for developer preferences and technical notes.
 
 ## Key Features
 
 -   **Automated Email Triage**: Identifies emails relevant to ServiceNow development tasks.
--   **Contextual Response Generation**: Drafts responses to common developer queries, code discussions, or system notifications.
--   **Knowledge Base Integration**: Utilizes `knowledge/user_preference.txt` for ServiceNow instance details, coding standards, API endpoints, and common script patterns.
+-   **Contextual Response Generation**: Utilizes an advanced LLM (e.g., Gemini) to draft responses to common developer queries, code discussions, or system notifications, drawing on its broad knowledge and the provided email context.
+-   **Developer Preferences Reference**: The `knowledge/user_preference.txt` file can store ServiceNow instance details, coding standards, and common script patterns for user reference or high-level context.
 -   **Drafts for Review**: Saves generated responses as drafts in Gmail for developer review before sending.
--   **Customizable**: Easily adapt the agent's knowledge and response strategies.
+-   **Customizable**: Easily adapt the agent's persona and high-level guidance.
 
 ## Project Structure
 
