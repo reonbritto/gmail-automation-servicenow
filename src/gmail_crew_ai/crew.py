@@ -12,7 +12,8 @@ from gmail_crew_ai.models import EmailResponse, EmailDetails, EmailResponseList
 
 @CrewBase
 class GmailCrewAi():
-	"""Crew that processes emails."""
+	"""ServiceNow Ticket Response Automation Crew"""
+	
 	agents_config = 'config/agents.yaml'
 	tasks_config = 'config/tasks.yaml'
 
@@ -94,12 +95,11 @@ class GmailCrewAi():
 		)
 	
 	@task
-	def response_task(self) -> Task:
-		"""The email response task."""
+	def servicenow_ticket_response_task(self) -> Task:
+		"""ServiceNow Ticket Processing Task"""
 		return Task(
-			config=self.tasks_config['response_task'],
-			# Use EmailResponseList instead of List[EmailResponse]
-			output_pydantic=EmailResponseList,
+			config=self.tasks_config['servicenow_ticket_response_task'],
+			agent=self.response_generator()
 		)
 
 	@crew
