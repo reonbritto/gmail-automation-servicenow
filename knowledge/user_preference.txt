@@ -1,38 +1,96 @@
 # PERSONAL INFORMATION
 Name: John Doe
-Profession: AI Engineer
-Company: TechInnovate AI (Senior Engineer)
-Location: San Francisco, California
-Timezone: Pacific Time (UTC-8/UTC-7 during DST)
+Profession: Senior ServiceNow Administrator
+Company: GlobalTech Solutions
+Location: New York, NY
+Timezone: Eastern Time (UTC-5/UTC-4 during DST)
 
-# INTERESTS & EXPERTISE
-Primary Interests: AI Agents, Large Language Models, Reinforcement Learning
-Secondary Interests: Computer Vision, Robotics, Edge Computing
-Programming Languages: Python, TypeScript, Rust
-Frameworks: TensorFlow, PyTorch, LangChain, CrewAI
+# SERVICENOW EXPERTISE
+Primary Skills: ServiceNow ITSM Suite (Incident, Problem, Change, Request), Workflow Design, System Administration
+Secondary Skills: ServiceNow ITOM, CMDB Management, Reporting & Analytics
+Certifications: ServiceNow Certified System Administrator (CSA), ITIL Foundation
+Experience: 7+ years working with the ServiceNow platform
 
 # COMMUNICATION PREFERENCES
 Preferred Name: John
-Email Style: Professional but conversational
-Response Priority:
-  - High: Client requests, team questions, project deadlines
-  - Medium: Industry connections, networking, conference invitations
-  - Low: Newsletters, marketing emails, unsolicited sales
+Email Style for ServiceNow Tickets: Professional, concise, and action-oriented. Always include the ticket number in the subject.
+Response Priority (General Guidance):
+  - Critical: P1/P2 incidents, Major system outages, Security breaches.
+  - High: P3 incidents, Urgent change requests, VIP user issues.
+  - Medium: Standard service requests, P4 incidents, Non-urgent changes.
+  - Low: General inquiries, Information requests with no immediate impact.
 
-# AVAILABILITY
-Working Hours: Monday-Friday, 9:00 AM - 6:00 PM PT
-Meeting Preferences: Mornings for important discussions, afternoons for routine check-ins
-Regular Commitments: Team standup (Daily 10:00 AM), Research review (Thursdays 2:00 PM)
+# SERVICENOW TICKET HANDLING
+Instance Details:
+  - Production Instance URL: https://mycompany.service-now.com
+  - Development Instance URL: https://mycompanydev.service-now.com
+  - Test Instance URL: https://mycompanytest.service-now.com
 
-# EMAIL ORGANIZATION
-Label Preferences:
-  - Work: Professional communications
-  - Projects: Ongoing project discussions
-  - Learning: Educational content and courses
-  - Networking: Industry connections and events
-  - Personal: Non-work related emails
+Ticket Response Templates (Use these as a base, adapt as needed):
+  - Incident Acknowledgment (P1/P2):
+    "Dear [User Name],
+    This email confirms receipt of Incident [TICKET_NUMBER] regarding '[Short Description]'. We have classified this as a [Priority Level] issue and our team is actively investigating. You can expect an initial update within [SLA_TIME_FROM_SLA_EXPECTATIONS] or sooner. Ref: [TICKET_NUMBER]"
+  - Incident Update:
+    "Dear [User Name],
+    This is an update for Incident [TICKET_NUMBER] ('[Short Description]'). Current Status: [Current Status of Investigation/Work] Next Steps: [Next Action Items by Support Team] We anticipate the next update by [Time/Date]. Ref: [TICKET_NUMBER]"
+  - Service Request Acknowledgment:
+    "Dear [User Name],
+    We have received your Service Request [TICKET_NUMBER] for '[Short Description]'. This request is now being processed by the relevant team. The standard fulfillment time for this type of request is [FULFILLMENT_TIME_FROM_SLA_EXPECTATIONS]. We will notify you upon completion or if further information is required. Ref: [TICKET_NUMBER]"
+  - Change Request Information (e.g., Awaiting Approval):
+    "Dear [Requester Name],
+    Change Request [TICKET_NUMBER] ('[Short Description]') has been logged and is currently [Status, e.g., 'Awaiting Approval', 'Scheduled for Review']. Planned Implementation Window: [Date/Time if available] We will update you on the status post the review/approval process. Ref: [TICKET_NUMBER]"
+  - Request for More Information:
+    "Dear [User Name],
+    Regarding ticket [TICKET_NUMBER] ('[Short Description]'), we require some additional information to proceed: - [Specific Question 1] - [Specific Question 2] Please reply to this email with the requested details. Ref: [TICKET_NUMBER]"
+  - Resolution Notification:
+    "Dear [User Name],
+    We are pleased to inform you that Incident/Request [TICKET_NUMBER] ('[Short Description]') has been resolved. Resolution Details: [Briefly describe the resolution] Please verify the resolution and let us know if you encounter any further issues. This ticket will automatically close in [Number] business days if no further correspondence is received. Ref: [TICKET_NUMBER]"
 
-# RESPONSE TEMPLATES
-Meeting Request: "I'm available [suggest 2-3 time slots]. Would any of these work for you? Alternatively, you can book directly on my calendar: [calendar_link]"
-Follow-up Timing: "I'll follow up on this by [day/date], once I've had a chance to review the details."
-Delay Apology: "I apologize for the delayed response. I've been focused on [current project/general reason]."
+# SLA EXPECTATIONS (Service Level Agreements)
+Incident Response Times (Time to first meaningful response/acknowledgment):
+  - P1 (Critical): 15 minutes
+  - P2 (High): 1 hour
+  - P3 (Medium): 4 business hours
+  - P4 (Low): 1 business day
+
+Incident Resolution Times (Target, may vary):
+  - P1 (Critical): 4 hours
+  - P2 (High): 8 business hours
+  - P3 (Medium): 3 business days
+  - P4 (Low): 5 business days
+
+Service Request Fulfillment Times (Target, may vary):
+  - Standard Requests (e.g., Software Install): 2-3 business days
+  - Complex Requests (e.g., New Equipment): 5-7 business days
+  - Access Requests: 1 business day
+
+# ESCALATION PROCEDURES
+Escalation Triggers:
+  - P1 incident unresolved after 2 hours.
+  - P2 incident unresolved after 4 business hours.
+  - SLA for response/resolution breached for any priority.
+  - User explicitly requests escalation and provides valid reasoning.
+  - Security-related incidents requiring immediate higher-level review.
+
+Escalation Contacts (for internal notification by the agent if it identifies an escalation need):
+  - Tier 2 Support Lead: t2lead@mycompany.com
+  - IT Manager: itmanager@mycompany.com
+  - On-call Duty Manager: oncall.manager@mycompany.com (for P1/Security after hours)
+
+# COMMON SERVICENOW SCENARIOS & KEYWORDS
+Frequent Issues to Watch For:
+  - Password resets, account lockouts
+  - VPN connectivity problems
+  - Software installation/access requests
+  - Hardware malfunctions (laptop, printer)
+  - Application errors or unavailability
+
+Knowledge Base References (for agent to potentially suggest if applicable):
+  - Internal Employee IT FAQ: https://kb.mycompany.com/faq
+  - ServiceNow Self-Service Portal: https://mycompany.service-now.com/sp
+
+Signature for Emails:
+Best regards,
+John Doe
+ServiceNow Support Team
+GlobalTech Solutions

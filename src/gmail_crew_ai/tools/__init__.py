@@ -1,19 +1,19 @@
 from .gmail_tools import (
-    GmailReader,
-    ServiceNowEmailParser,
-    ServiceNowResponseGenerator,
-    GmailSender
-)
-from .date_tools import (
-    DateTimeHelper,
-    BusinessHoursCalculator
+    GetUnreadEmailsTool, 
+    SaveDraftTool, 
+    GmailOrganizeTool, 
+    GmailDeleteTool,
+    EmptyTrashTool,
+    GetThreadHistoryTool,  # Add new tool
+    ContextAwareReplyTool,  # Add new tool
 )
 
 __all__ = [
-    "GmailReader",
-    "ServiceNowEmailParser", 
-    "ServiceNowResponseGenerator",
-    "GmailSender",
-    "DateTimeHelper",
-    "BusinessHoursCalculator"
+    "GetUnreadEmailsTool",
+    "SaveDraftTool",
+    "GmailOrganizeTool",
+    "GmailDeleteTool",
+    "EmptyTrashTool",
+    "GetThreadHistoryTool",  # Add new tool
+    "ContextAwareReplyTool",  # Add new tool
 ]

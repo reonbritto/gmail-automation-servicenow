@@ -1,15 +1,19 @@
 [project]
 name = "gmail_crew_ai"
 version = "0.1.0"
-description = "gmail-crew-ai using crewAI"
+description = "ServiceNow ticket response automation using CrewAI and Gmail"
 authors = [{ name = "Your Name", email = "you@example.com" }]
 requires-python = ">=3.10,<3.13"
 dependencies = [
     "bs4>=0.0.2",
     "crewai[tools]>=0.102.0,<1.0.0",
+    "fastapi>=0.115.0", # Assuming api.py uses FastAPI
+    "uvicorn>=0.34.0", # For running FastAPI
     "python-dotenv>=1.0.0",
-    "pydantic>=2.0.0",
-    "beautifulsoup4>=4.12.0",
+    "pydantic>=2.10.0",
+    "requests>=2.32.0",
+    "python-dateutil>=2.9.0",
+    "imaplib2>=2.57", # Added as per Dockerfile
 ]
 
 [project.scripts]

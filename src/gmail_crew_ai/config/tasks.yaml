@@ -1,159 +1,37 @@
-response_task:
+servicenow_ticket_response_task:
   description: >
-    Analyze incoming emails and generate appropriate responses for important messages. Focus on emails that require human attention such as: - Important business communications - Personal messages requiring input - Meeting requests and calendar invitations - Customer inquiries
+    Process ServiceNow ticket notifications fetched from Gmail (assumed to be available from a before_kickoff step, e.g., in 'output/fetched_emails.json'). The 'user_preference.txt' knowledge file contains ServiceNow instance details, SLA guidelines, and response templates.
 
-    Ignore automated messages like: - Newsletters and promotional emails - System notifications - Automated reports - Spam or junk mail
+    For each ServiceNow ticket email:
+      1. **Identify Ticket Type**: Determine if it's an Incident (INC), Service Request (REQ), Change Request (CHG), or Problem (PRB) based on email subject and body.
+      2. **Extract Key Information**:
+         - Ticket number (e.g., INC0001234, REQ0005678)
+         - Priority/Urgency level (e.g., P1, P2, High, Medium)
+         - Affected user/requester name or email
+         - Brief description of the issue or request
+         - Current status if mentioned (e.g., New, In Progress, Pending)
+      3. **Assess Response Requirements based on 'user_preference.txt'**:
+         - Refer to 'Response Priority' and 'SLA EXPECTATIONS' sections in 'user_preference.txt'.
+         - CRITICAL (e.g., P1/P2 incidents, system outages): Requires immediate acknowledgment.
+         - HIGH (e.g., P3 incidents, change approvals): Requires prompt attention.
+         - MEDIUM (e.g., Service requests): Standard processing.
+         - LOW (e.g., General inquiries): Standard processing.
+      4. **Generate Appropriate Response using 'user_preference.txt' templates**:
+         - Utilize templates from 'Ticket Response Templates' section (e.g., Incident Acknowledgment, Request Fulfillment).
+         - Acknowledge receipt within SLA timeframes.
+         - Provide status updates or request additional information if needed.
+         - Offer initial troubleshooting steps if applicable and defined.
+         - Escalate if necessary, based on priority, complexity, and 'ESCALATION PROCEDURES' in 'user_preference.txt'.
+      5. **Use Professional ServiceNow Communication Style**:
+         - Ensure the ticket number is in the subject line of the reply.
+         - Reference SLA commitments where appropriate.
+         - Provide clear next steps for the user.
+         - Use appropriate technical terminology.
+         - Include relevant knowledge base article links if helpful (from 'Knowledge Base References' in 'user_preference.txt').
 
-    For each email requiring a response: 1. Analyze the content and context 2. Determine the appropriate tone and style 3. Generate a professional, helpful response 4. Include all necessary information 5. Maintain appropriate email etiquette
+    IMPORTANT: - Only respond to legitimate ServiceNow ticket notifications that require action. - Skip emails that are purely informational and don't require a direct response from you (e.g., ServiceNow system maintenance notifications, training announcements, general ServiceNow community emails, automated reports not needing action). - Use the 'save_email_draft' tool for all generated responses. The subject should be "Re: [Original Subject]" and the recipient should be the original sender of the ticket email.
+
   expected_output: >
-    A structured report containing: - List of emails processed - Classification of each email (response needed/no response) - Generated responses for emails requiring action - Recommended next steps for each email - Summary statistics of email processing
-
-analyze_servicenow_email:
-  description: >
-    Analyze incoming emails to identify ServiceNow ticket notifications and extract relevant information.
-
-    For each email, determine: 1. Is this a ServiceNow notification? 2. What type of ServiceNow communication is it? (incident, request, change, approval, etc.) 3. Extract key ticket information:
-       - Ticket number
-       - Priority level
-       - Current state/status
-       - Assigned person/group
-       - Due date/SLA information
-       - Description of the issue
-    4. Assess urgency level and business impact 5. Identify any escalation requirements
-
-    Pay special attention to: - High priority incidents - SLA breach notifications - Approval requests requiring action - Assignment notifications
-  expected_output: >
-    For each ServiceNow email, provide: - Email classification (ServiceNow/Non-ServiceNow) - Ticket type and number - Priority and urgency assessment - Key ticket details extracted - Recommended response strategy - Escalation requirements if any
-
-determine_response_strategy:
-  description: >
-    Based on the ServiceNow ticket analysis, determine the optimal response strategy.
-
-    Consider the following factors: 1. Ticket priority and urgency 2. Current business hours 3. SLA requirements and deadlines 4. Assignment status (assigned to me/my team/other) 5. Ticket state (new, in progress, resolved, etc.) 6. Escalation policies 7. Automation capabilities vs. human intervention needs
-
-    Determine: - Should an automated response be sent? - What type of response is appropriate? - Is immediate action required? - Should this be escalated? - What follow-up actions are needed?
-  expected_output: >
-    A response strategy document including: - Recommended response type (automated acknowledgment, detailed response, escalation, etc.) - Urgency assessment and timeline - Key points to address in the response - Follow-up actions required - Escalation recommendations - Risk assessment if no immediate action is taken
-
-generate_email_response:
-  description: >
-    Generate professional, contextually appropriate email responses for ServiceNow tickets based on the determined strategy.
-
-    Create responses that: 1. Acknowledge receipt of the ticket/notification 2. Provide relevant status updates 3. Include estimated timelines when appropriate 4. Request additional information if needed 5. Set proper expectations 6. Maintain professional tone 7. Include necessary technical details 8. Reference company policies when relevant
-
-    Ensure responses are: - Clear and concise - Technically accurate - Professionally written - Appropriately urgent based on ticket priority - Compliant with company communication standards
-  expected_output: >
-    Professional email responses including: - Subject line (if reply needed) - Properly formatted email body - Appropriate greeting and closing - Clear action items or next steps - Professional signature block - Any necessary CC/BCC recommendations
-
-review_response_quality:
-  description: >
-    Review all generated email responses for quality, accuracy, and professionalism before they are sent.
-
-    Check each response for: 1. Grammar and spelling accuracy 2. Professional tone and language 3. Technical accuracy of information provided 4. Completeness of response to the original request 5. Appropriate urgency level matching ticket priority 6. Compliance with company communication standards 7. Proper email etiquette and formatting 8. Clear action items and next steps 9. Appropriate level of detail 10. Potential misunderstandings or ambiguities
-
-    Provide feedback and recommendations for improvement.
-  expected_output: >
-    Quality review report containing: - Overall quality score for each response - Specific feedback on grammar, tone, and content - Recommended revisions or improvements - Approval status (approved/needs revision) - Risk assessment for sending as-is - Best practices recommendations
-
-coordinate_email_workflow:
-  description: >
-    Orchestrate the entire email processing workflow and handle any exceptions or edge cases.
-
-    Responsibilities include: 1. Managing the flow between different agents 2. Handling exceptions and errors gracefully 3. Ensuring all emails are properly processed 4. Coordinating timing and prioritization 5. Managing escalations when needed 6. Tracking workflow progress and metrics 7. Handling edge cases that don't fit standard patterns 8. Ensuring quality control throughout the process 9. Managing retry logic for failed operations 10. Providing overall workflow status and reporting
-
-    Monitor for: - Emails that require immediate human intervention - System errors or failures - Unusual patterns or anomalies - Performance issues or bottlenecks
-  expected_output: >
-    Workflow coordination report including: - Overall workflow status and progress - Number of emails processed successfully - Any exceptions or errors encountered - Performance metrics and timing - Escalation actions taken - Recommendations for workflow improvements - Summary of all actions completed - Next steps and follow-up requirements
-
-read_gmail_emails:
-  description: >
-    Connect to Gmail using IMAP and read unread emails from the inbox.
-
-    Steps to follow: 1. Connect to Gmail using the provided credentials 2. Access the inbox folder 3. Search for unread emails 4. Fetch email details including subject, sender, date, and body content 5. Extract email metadata and content 6. Categorize emails by type (ServiceNow, business, personal, etc.)
-
-    Return a structured list of emails with: - Subject line - Sender information - Email body content - Date received - Message ID - Priority level - Email type classification
-  expected_output: >
-    A JSON array of email objects containing: - subject: Email subject line - sender: Sender email and name - date: Email timestamp - body: Full email content - message_id: Unique message identifier - is_servicenow: Boolean indicating ServiceNow origin - priority: Priority level (high, normal, low)
-
-analyze_email_content:
-  description: >
-    Analyze each email to determine if it requires a response and what type of response is appropriate.
-
-    For each email, determine: 1. Does this email require a response?
-       - Business emails: Usually yes
-       - Personal emails: Usually yes
-       - Newsletters/automated: Usually no
-       - ServiceNow notifications: Usually yes
-
-    2. What type of response is needed?
-       - Acknowledgment only
-       - Information request response
-       - Meeting/scheduling response
-       - Technical/ServiceNow response
-       - Question answering
-       - Approval/decision required
-
-    3. What is the urgency level?
-       - High: Urgent matters, incidents, deadlines
-       - Medium: Normal business communications
-       - Low: FYI, non-critical information
-
-    4. Extract key points that need to be addressed in the response
-
-    5. Suggest appropriate tone for response
-  expected_output: >
-    For each email, provide analysis containing: - needs_response: Boolean indicating if response is required - response_type: Type of response needed - urgency: Urgency level (high, medium, low) - key_points: List of key points to address - suggested_tone: Recommended tone for response
-
-generate_email_responses:
-  description: >
-    Generate appropriate email responses for emails that require replies.
-
-    For each email that needs a response: 1. Create a contextually appropriate response based on:
-       - Original email content and intent
-       - Sender's requirements or questions
-       - Appropriate professional tone
-       - Company policies and procedures
-
-    2. Structure the response with:
-       - Appropriate greeting using sender's name when possible
-       - Clear acknowledgment of the original email
-       - Addressing key points from the original message
-       - Providing necessary information or next steps
-       - Professional closing
-
-    3. Ensure responses are:
-       - Professional and courteous
-       - Clear and concise
-       - Actionable when appropriate
-       - Contextually relevant
-       - Grammatically correct
-
-    4. For ServiceNow emails, include:
-       - Acknowledgment of receipt
-       - Expected timeline for resolution/response
-       - Reference to ticket numbers when applicable
-       - Appropriate technical language
-  expected_output: >
-    For each email requiring a response, generate: - Complete email response text ready to send - Suggested subject line (typically "Re: [original subject]") - Response type and tone used - Key points addressed in the response - Timestamp of generation
-
-review_generated_responses:
-  description: >
-    Review all generated email responses for quality, accuracy, and appropriateness.
-
-    Check each response for: 1. Grammar and spelling accuracy 2. Professional tone and language 3. Completeness - addresses all key points from original email 4. Appropriateness of response type and tone 5. Clarity and conciseness 6. Proper email etiquette and formatting 7. Accuracy of technical information (for ServiceNow responses) 8. Potential misunderstandings or ambiguities
-
-    Provide feedback and recommendations for improvement if needed. Approve responses that meet quality standards.
-  expected_output: >
-    Quality review report containing: - Overall quality assessment for each response - Specific feedback on content, tone, and accuracy - Recommended revisions if needed - Approval status (approved/needs revision) - Risk assessment for sending as-is - Best practices recommendations
-
-save_email_results:
-  description: >
-    Save all email processing results to organized output files for review and potential sending.
-
-    Create organized output files containing: 1. Complete email analysis report with original emails and analysis results 2. Generated response files ready for review 3. Processing summary with statistics and overview 4. Quality review results and recommendations
-
-    Organize files by: - Timestamp - Email type (ServiceNow, business, personal) - Priority level - Response status (responded/no response needed)
-
-    Generate summary report showing: - Total emails processed - Number requiring responses - Response types generated - Quality scores - Recommendations for next steps
-  expected_output: >
-    File organization report containing: - List of generated files and their locations - Summary statistics of email processing - Overview of responses generated - Next steps and recommendations for sending responses - Backup and archival information
+    A comprehensive JSON report detailing the ServiceNow tickets processed. Each entry in the report should include: - Original Email ID and Subject. - Extracted Ticket Number and Type (INC/REQ/CHG/PRB). - Assessed Priority. - Action Taken: (e.g., "Drafted Acknowledgment", "Drafted Information Request", "Skipped - Informational", "Marked for Escalation Review"). - Recipient of the draft. - Filename of the saved draft if one was created. - Brief summary of the response generated or reason for skipping. - Any identified escalation needs based on 'user_preference.txt'. The report should be saved to the specified output file.
+  agent: response_generator
+  output_file: output/servicenow_ticket_report.json

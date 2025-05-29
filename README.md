@@ -1,22 +1,19 @@
-# Gmail Response Generator with CrewAI 📧✨
+# ServiceNow Ticket Response Automation with CrewAI
 
-Gmail Response Generator with CrewAI is a streamlined email management system that focuses on two key tasks:
+This project automates the processing and response generation for ServiceNow tickets received via Gmail, utilizing the CrewAI framework. It aims to streamline IT Service Management (ITSM) by intelligently handling various ticket types, prioritizing responses, and adhering to best practice communication styles.
 
-1. **Fetching your unread emails** from Gmail
-2. **Generating appropriate responses** for emails that need attention
+## Key Features
 
-## ✨ Features
+-   **Automated Ticket Triaging**: Identifies ServiceNow ticket types (Incident, Service Request, Change Request, Problem).
+-   **Information Extraction**: Pulls key details from ticket emails (e.g., ticket number, priority, user, description).
+-   **Priority-Based Handling**: Assesses urgency and generates responses aligned with Service Level Agreements (SLAs).
+-   **Contextual Response Generation**: Creates professional and appropriate responses, including acknowledgments, status updates, information requests, or escalation notices.
+-   **ServiceNow Communication Standards**: Adheres to professional ITSM communication styles.
+-   **Customizable Knowledge Base**: Leverages `user_preference.txt` for ServiceNow-specific configurations, templates, and escalation paths.
+-   **Selective Processing**: Filters out irrelevant notifications (e.g., system maintenance, general announcements).
+-   **Draft Generation**: Saves generated responses as drafts for review before sending.
 
-- **📥 Email Fetching**: Automatically retrieves unread emails from your Gmail inbox
-- **📊 Smart Analysis**: Analyzes email content to determine which messages need responses
-- **💬 Automated Responses**: Generates draft responses for important emails that need replies
-- **🧵 Smart Threading**: Enhanced conversation continuity with accurate threading of emails even in long conversations
-- **📝 Context-Aware Replies**: Drafts replies with full conversation history for better context
-- **📚 Thread History**: Automatically retrieves complete thread history for comprehensive context before replying
-- **🌐 REST API**: Access all functionality through a RESTful API interface
-- **🪢 Empty Subject Handling**: Properly threads replies even for emails missing subject lines
-
-## 🚀 Installation
+## Project Structure
 
 ```bash
 # Clone the repository
@@ -32,7 +29,7 @@ crewai install
 pip install fastapi uvicorn
 ```
 
-## ⚙️ Configuration
+## Configuration
 
 Create a `.env` file in the root directory with the following variables:
 
@@ -69,7 +66,7 @@ APP_PASSWORD=your_app_password
 **Note**: App passwords can only be created if you have 2-Step Verification enabled on your Google account.
 </details>
 
-## 📧 How It Works
+## How It Works
 
 This application uses the IMAP (Internet Message Access Protocol) to securely connect to your Gmail account. Here's how it works:
 
@@ -109,7 +106,7 @@ This threading system ensures that responses maintain conversation context and a
 
 ---
 
-## 📊 Dataset Details
+## Dataset Details
 
 **Source & Types:**  
 This project does not use a traditional ML dataset. Instead, it operates directly on your Gmail inbox using the IMAP protocol. The "dataset" consists of your real, live email data (subjects, senders, bodies, threads, etc.) fetched securely from Gmail.
@@ -132,7 +129,7 @@ This project does not use a traditional ML dataset. Instead, it operates directl
 
 ---
 
-## 🏋️ Model Training, Testing & Validation
+## Model Training, Testing & Validation
 
 **Model Training:**  
 - This project leverages pre-trained Large Language Models (LLMs) such as OpenAI GPT-4 or Gemini, accessed via API.
@@ -149,7 +146,7 @@ This project does not use a traditional ML dataset. Instead, it operates directl
 
 ---
 
-## 🖥️ Hardware & Software Requirements
+## Hardware & Software Requirements
 
 **Hardware:**  
 - For inference: Any modern CPU (cloud VM or local machine). No GPU required for API-based LLMs.
@@ -162,7 +159,7 @@ This project does not use a traditional ML dataset. Instead, it operates directl
 
 ---
 
-## 📈 Metrics & Model Evaluation
+## Metrics & Model Evaluation
 
 **Metrics Used:**  
 - **Response Accuracy:** Percentage of emails correctly identified as needing a response.
@@ -176,7 +173,7 @@ This project does not use a traditional ML dataset. Instead, it operates directl
 
 ---
 
-## 🚀 Model Inference Details
+## Model Inference Details
 
 - Inference is performed by sending email context (subject, body, thread history) to the LLM via API.
 - The LLM returns a draft reply, which is then saved as a Gmail draft.
@@ -184,7 +181,7 @@ This project does not use a traditional ML dataset. Instead, it operates directl
 
 ---
 
-## 🏗️ High-Level Architecture Diagram
+## High-Level Architecture Diagram
 
 ```
 +-------------------+       +-------------------+       +-------------------+
@@ -201,7 +198,7 @@ This project does not use a traditional ML dataset. Instead, it operates directl
 
 ---
 
-## 📊 Usage
+## Usage
 
 ### Option 1: Run with CrewAI CLI
 
@@ -228,7 +225,7 @@ nohup uvicorn src.gmail_crew_ai.api:app --host 0.0.0.0 --port 8000 > api.log 2>&
 Once running, access the interactive API documentation at:
 - http://localhost:8000/docs (or http://your-server-ip:8000/docs)
 
-## 🧰 API Endpoints
+## API Endpoints
 
 The FastAPI server provides the following endpoints:
 
@@ -249,7 +246,7 @@ The FastAPI server provides the following endpoints:
 
 ---
 
-## 🧪 End-to-End Testing
+## End-to-End Testing
 
 1. **Fetch Unread Emails:**  
    - Use `/emails/unread` endpoint or `crewai run`.
@@ -272,7 +269,7 @@ The FastAPI server provides the following endpoints:
 
 ---
 
-## 🌟 Special Features
+## Special Features
 
 - **🧠 Smart Response Generation**: The AI intelligently determines which emails actually need responses
 - **✍️ Custom Drafts**: Responses are tailored to the email context and include proper formatting
@@ -281,429 +278,31 @@ The FastAPI server provides the following endpoints:
 - **🔄 Accurate Threading**: Ensures replies appear correctly threaded in email clients
 - **👥 Participant Awareness**: Identifies all participants in conversation threads for better context
 
-# Gmail Crew AI - ServiceNow Email Automation
+## Contributing
 
-An intelligent email processing system built with CrewAI that automatically analyzes Gmail messages, identifies ServiceNow notifications, and generates appropriate responses.
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-## 🚀 Features
+## Running with Docker
 
-- **Automated Email Processing**: Fetches and analyzes unread emails from Gmail
-- **ServiceNow Integration**: Specialized analysis of ServiceNow ticket notifications
-- **Intelligent Response Generation**: Creates contextually appropriate email responses
-- **Quality Assurance**: Built-in review system for generated responses
-- **Workflow Orchestration**: Coordinated multi-agent workflow for complex email handling
-
-## 🏗️ Architecture
-
-The system uses a multi-agent architecture with specialized roles:
-
-- **Response Generator**: Handles general email response generation
-- **ServiceNow Email Analyst**: Analyzes ServiceNow notifications and extracts ticket information
-- **Response Strategist**: Determines optimal response strategies based on context and urgency
-- **Content Generator**: Creates professional email content for ServiceNow tickets
-- **Quality Reviewer**: Reviews responses for accuracy and professionalism
-- **Workflow Coordinator**: Orchestrates the entire email processing workflow
-
-## 📋 Prerequisites
-
-- Python 3.10-3.12
-- Gmail API credentials
-- OpenAI API key (or other LLM provider)
-- ServiceNow instance (for ServiceNow-specific features)
-
-## 🛠️ Installation
-
-1. **Clone the repository**:
+1. **Build the Docker image:**
    ```bash
-   git clone <repository-url>
-   cd email-automation
+   docker build -t gmail-crewai-app .
    ```
 
-2. **Install dependencies**:
+2. **Run the container (with your .env file):**
    ```bash
-   # Using uv (recommended)
-   uv sync
-
-   # Or using pip
-   pip install -r requirements.txt
+   docker run -d --env-file .env -p 8000:8000 gmail-crewai-app
    ```
 
-3. **Set up environment variables**:
-   Create a `.env` file in the root directory:
-   ```env
-   OPENAI_API_KEY=your_openai_api_key
-   GMAIL_API_CREDENTIALS=path_to_gmail_credentials.json
-   SERVICENOW_INSTANCE=your_servicenow_instance_url
-   SERVICENOW_USERNAME=your_username
-   SERVICENOW_PASSWORD=your_password
-   ```
+   - The API will be available at: [http://localhost:8000/docs](http://localhost:8000/docs)
+   - If running on a remote server, replace `localhost` with your server's IP.
 
-4. **Configure Gmail API**:
-   - Go to [Google Cloud Console](https://console.cloud.google.com/)
-   - Create a new project or select existing one
-   - Enable Gmail API
-   - Create credentials (OAuth 2.0 Client ID)
-   - Download the credentials JSON file
-
-## 🚀 Usage
-
-### Command Line
-
-Run the email automation system:
-
-```bash
-# Using uv
-uv run crewai run
-
-# Or directly
-python -m gmail_crew_ai.main
-```
-
-You'll be prompted to specify how many emails to process (default: 5).
-
-### Docker
-
-Build and run using Docker:
-
-```bash
-# Build the image
-docker build -t gmail-crew-ai .
-
-# Run the container
-docker run -p 8000:8000 \
-  -e OPENAI_API_KEY=your_api_key \
-  -e GMAIL_API_CREDENTIALS=/app/credentials.json \
-  -v /path/to/credentials.json:/app/credentials.json \
-  gmail-crew-ai
-```
-
-### API Mode
-
-Start the FastAPI server:
-
-```bash
-uvicorn gmail_crew_ai.api:app --host 0.0.0.0 --port 8000
-```
-
-Access the API documentation at `http://localhost:8000/docs`
-
-## 📁 Project Structure
-
-```
-gmail-crew-ai/
-├── src/
-│   └── gmail_crew_ai/
-│       ├── config/
-│       │   ├── agents.yaml      # Agent configurations
-│       │   └── tasks.yaml       # Task definitions
-│       ├── tools/               # Custom tools
-│       ├── crew.py             # Main crew definition
-│       ├── main.py             # CLI entry point
-│       └── api.py              # FastAPI server
-├── output/                     # Generated outputs
-├── .env                       # Environment variables
-├── pyproject.toml            # Project configuration
-├── Dockerfile               # Docker configuration
-└── README.md               # This file
-```
-
-## 🔧 Configuration
-
-### Agents
-
-Agents are configured in `src/gmail_crew_ai/config/agents.yaml`. Each agent has:
-- **Role**: The agent's primary function
-- **Goal**: What the agent aims to achieve
-- **Backstory**: Context and expertise background
-
-### Tasks
-
-Tasks are defined in `src/gmail_crew_ai/config/tasks.yaml`. Each task includes:
-- **Description**: Detailed task instructions
-- **Expected Output**: What the task should produce
-- **Agent**: Which agent executes the task
-
-## 🔍 Workflow
-
-1. **Email Fetching**: System connects to Gmail and retrieves unread emails
-2. **ServiceNow Analysis**: Identifies ServiceNow notifications and extracts ticket data
-3. **Strategy Determination**: Analyzes context and determines response approach
-4. **Content Generation**: Creates appropriate email responses
-5. **Quality Review**: Reviews generated content for accuracy and professionalism
-6. **Workflow Coordination**: Manages the entire process and handles exceptions
-
-## 📊 Output
-
-The system generates:
-- **Response Report**: Summary of processed emails and generated responses
-- **Draft Emails**: Ready-to-send email drafts
-- **Analysis Reports**: Detailed analysis of ServiceNow tickets
-- **Quality Assessments**: Review results for each generated response
-
-## 🛡️ Error Handling
-
-The system includes comprehensive error handling:
-- Invalid email limits default to 5
-- Missing agent configurations are clearly reported
-- Network issues are handled gracefully
-- Detailed error messages for debugging
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🚫 Troubleshooting
-
-### Common Issues
-
-1. **Agent Configuration Error**: Ensure all agents are defined in `agents.yaml`
-2. **Task Configuration Error**: Verify task definitions in `tasks.yaml`
-3. **Gmail API Issues**: Check credentials and API permissions
-4. **Dependency Issues**: Run `uv sync` to install all dependencies
-
-### Debug Mode
-
-Run with debug information:
-
-```bash
-python -m gmail_crew_ai.main --debug
-```
-
-## 🔮 Future Enhancements
-
-- [ ] Support for multiple email providers
-- [ ] Advanced ServiceNow integration
-- [ ] Machine learning-based email classification
-- [ ] Integration with other ITSM platforms
-- [ ] Advanced scheduling and automation features
-
-# Gmail Crew AI - Intelligent Email Reader and Reply System
-
-An intelligent email processing system built with CrewAI that automatically reads emails from your Gmail inbox, analyzes them, and generates appropriate replies for important messages.
-
-## 🚀 Features
-
-- **Gmail Integration**: Connects to your Gmail account using IMAP to read emails
-- **Intelligent Email Analysis**: Uses AI to analyze email content and determine importance
-- **Smart Reply Generation**: Creates contextually appropriate email responses
-- **ServiceNow Integration**: Specialized handling for ServiceNow ticket notifications
-- **Quality Assurance**: Built-in review system for generated responses
-- **Automated Workflow**: Coordinated multi-agent workflow for email processing
-
-## 🏗️ Architecture
-
-The system uses a multi-agent architecture with specialized roles:
-
-- **Gmail Reader Agent**: Connects to Gmail and fetches unread emails
-- **Email Classifier**: Determines if emails require responses and their priority
-- **Response Generator**: Creates appropriate email responses based on content
-- **ServiceNow Analyst**: Handles ServiceNow ticket notifications specifically
-- **Quality Reviewer**: Reviews generated responses for accuracy and professionalism
-- **Workflow Coordinator**: Orchestrates the entire email processing workflow
-
-## 📋 Prerequisites
-
-- Python 3.10-3.12
-- Gmail account with App Password enabled
-- Gemini API key for AI processing
-- ServiceNow instance (optional, for ServiceNow-specific features)
-
-## 🛠️ Installation
-
-1. **Clone the repository**:
+3. **(Optional) Mount output directory:**
    ```bash
-   git clone <repository-url>
-   cd email-automation
+   docker run -d --env-file .env -p 8000:8000 -v $(pwd)/output:/app/output gmail-crewai-app
    ```
 
-2. **Install dependencies**:
-   ```bash
-   # Using uv (recommended)
-   uv sync
-
-   # Or using pip
-   pip install -r requirements.txt
-   ```
-
-3. **Set up environment variables**:
-   Create a `.env` file in the root directory:
-   ```env
-   # Gemini Model Configuration
-   MODEL=gemini/gemini-2.5-flash-preview-05-20
-   GEMINI_API_KEY=your_gemini_api_key_here
-
-   # Gmail Configuration
-   EMAIL_ADDRESS=your_email@gmail.com
-   APP_PASSWORD=your_gmail_app_password
-
-   # Optional: ServiceNow Configuration
-   SERVICENOW_INSTANCE=your_servicenow_instance_url
-   SERVICENOW_USERNAME=your_username
-   SERVICENOW_PASSWORD=your_password
-   ```
-
-4. **Enable Gmail App Password**:
-   - Go to your Google Account settings
-   - Enable 2-Factor Authentication
-   - Generate an App Password for "Mail"
-   - Use this App Password in the `.env` file
-
-## 🚀 Usage
-
-### Command Line
-
-Run the email processing system:
-
-```bash
-# Using uv
-uv run crewai run
-
-# Or directly
-python -m gmail_crew_ai.main
-```
-
-The system will:
-1. Connect to your Gmail inbox
-2. Read unread emails
-3. Analyze each email for importance and reply requirements
-4. Generate appropriate responses for relevant emails
-5. Present the responses for your review
-
-### API Mode
-
-Start the FastAPI server:
-
-```bash
-uvicorn gmail_crew_ai.api:app --host 0.0.0.0 --port 8000
-```
-
-Access the API at `http://localhost:8000/docs`
-
-## 📁 Project Structure
-
-```
-gmail-crew-ai/
-├── src/
-│   └── gmail_crew_ai/
-│       ├── config/
-│       │   ├── agents.yaml      # Agent configurations
-│       │   └── tasks.yaml       # Task definitions
-│       ├── tools/
-│       │   ├── gmail_reader.py  # Gmail IMAP reader
-│       │   └── email_tools.py   # Email processing tools
-│       ├── crew.py             # Main crew definition
-│       ├── main.py             # CLI entry point
-│       └── api.py              # FastAPI server
-├── output/                     # Generated email responses
-├── .env                       # Environment variables
-├── pyproject.toml            # Project configuration
-├── Dockerfile               # Docker configuration
-└── README.md               # This file
-```
-
-## 🔧 Configuration
-
-### Gmail Setup
-
-1. **Enable 2-Factor Authentication**: Required for App Passwords
-2. **Generate App Password**: 
-   - Go to Google Account → Security → App passwords
-   - Select "Mail" and generate password
-   - Use this password in `.env` file (not your regular Gmail password)
-
-### Email Processing Rules
-
-The system follows these rules for email processing:
-
-- **Requires Response**: Business emails, personal messages, meeting requests, customer inquiries
-- **No Response Needed**: Newsletters, promotions, automated notifications, spam
-- **High Priority**: ServiceNow incidents, urgent business communications
-- **Low Priority**: FYI emails, newsletters, automated reports
-
-## 🔍 Workflow
-
-1. **Gmail Connection**: System connects to Gmail using IMAP with App Password
-2. **Email Fetching**: Retrieves unread emails from inbox
-3. **Content Analysis**: AI analyzes email content, sender, and context
-4. **Classification**: Determines if email needs response and priority level
-5. **Response Generation**: Creates appropriate email responses
-6. **Quality Review**: Reviews generated content for accuracy
-7. **Output Generation**: Saves responses for review and potential sending
-
-## 📊 Output
-
-The system generates:
-- **Email Analysis Reports**: Detailed analysis of each processed email
-- **Draft Responses**: Ready-to-send email responses in text format
-- **Processing Summary**: Overview of emails processed and actions taken
-- **Quality Assessment**: Review results for each generated response
-
-## 🛡️ Security
-
-- **App Passwords**: Uses Gmail App Passwords for secure authentication
-- **Environment Variables**: Sensitive data stored in `.env` file
-- **No Email Sending**: System only reads emails and generates responses (doesn't auto-send)
-- **Local Processing**: All AI processing happens locally with your API keys
-
-## 🚫 Troubleshooting
-
-### Common Issues
-
-1. **Gmail Authentication Error**: 
-   - Ensure 2FA is enabled
-   - Use App Password, not regular password
-   - Check email address format
-
-2. **No Emails Found**: 
-   - Check if there are unread emails in inbox
-   - Verify Gmail connection settings
-   - Check IMAP is enabled in Gmail
-
-3. **AI Processing Errors**: 
-   - Verify Gemini API key is correct
-   - Check API quota limits
-   - Ensure internet connection
-
-### Debug Mode
-
-Run with debug information:
-
-```bash
-python -m gmail_crew_ai.main --debug
-```
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## ⚠️ Important Notes
-
-- **Review Before Sending**: Always review generated responses before sending
-- **Privacy**: Keep your `.env` file secure and never commit it to version control
-- **Rate Limits**: Be mindful of Gmail IMAP and API rate limits
-- **Testing**: Test with a small number of emails first
-
-## 🔮 Future Enhancements
-
-- [ ] Automatic email sending with user confirmation
-- [ ] Email threading and conversation context
-- [ ] Multiple email account support
-- [ ] Advanced filtering and categorization
-- [ ] Email template management
-- [ ] Scheduled email processing
+**Notes:**
+- Ensure your `.env` file is in the project root and contains all required secrets.
+- For Podman, use `podman` instead of `docker` in the above commands.
+- You can also run in CLI mode by overriding the CMD in the Docker run command if needed.

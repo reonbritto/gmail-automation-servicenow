@@ -17,7 +17,7 @@ RUN apt-get update && \
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
-# Upgrade pip and install Python dependencies
+# Upgrade pip and install Python dependencies for ServiceNow ticket automation
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir \
         fastapi \
@@ -35,6 +35,7 @@ COPY ./src ./src
 COPY pyproject.toml uv.lock ./
 
 # Optionally install crewai dependencies if pyproject.toml exists
+# This step ensures tools and other crew-specific items are set up.
 RUN if [ -f pyproject.toml ]; then crewai install || true; fi
 
 # Start second stage with clean image
@@ -50,11 +51,12 @@ ENV PYTHONPATH=/app/src
 # Set work directory
 WORKDIR /app
 
-# Copy application source code
+# Copy application source code for ServiceNow automation
 COPY ./src ./src
 
-# Expose FastAPI port
+# Expose FastAPI port (if an API is part of the application)
 EXPOSE 8000
 
-# Start FastAPI server
+# Start FastAPI server (assuming gmail_crew_ai.api:app is the entry point for an API)
+# If running as a script, this CMD would be different (e.g., ["python", "src/gmail_crew_ai/main.py"])
 CMD ["uvicorn", "gmail_crew_ai.api:app", "--host", "0.0.0.0", "--port", "8000"]
