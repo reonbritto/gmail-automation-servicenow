@@ -64,3 +64,96 @@ coordinate_email_workflow:
     Monitor for: - Emails that require immediate human intervention - System errors or failures - Unusual patterns or anomalies - Performance issues or bottlenecks
   expected_output: >
     Workflow coordination report including: - Overall workflow status and progress - Number of emails processed successfully - Any exceptions or errors encountered - Performance metrics and timing - Escalation actions taken - Recommendations for workflow improvements - Summary of all actions completed - Next steps and follow-up requirements
+
+read_gmail_emails:
+  description: >
+    Connect to Gmail using IMAP and read unread emails from the inbox.
+
+    Steps to follow: 1. Connect to Gmail using the provided credentials 2. Access the inbox folder 3. Search for unread emails 4. Fetch email details including subject, sender, date, and body content 5. Extract email metadata and content 6. Categorize emails by type (ServiceNow, business, personal, etc.)
+
+    Return a structured list of emails with: - Subject line - Sender information - Email body content - Date received - Message ID - Priority level - Email type classification
+  expected_output: >
+    A JSON array of email objects containing: - subject: Email subject line - sender: Sender email and name - date: Email timestamp - body: Full email content - message_id: Unique message identifier - is_servicenow: Boolean indicating ServiceNow origin - priority: Priority level (high, normal, low)
+
+analyze_email_content:
+  description: >
+    Analyze each email to determine if it requires a response and what type of response is appropriate.
+
+    For each email, determine: 1. Does this email require a response?
+       - Business emails: Usually yes
+       - Personal emails: Usually yes
+       - Newsletters/automated: Usually no
+       - ServiceNow notifications: Usually yes
+
+    2. What type of response is needed?
+       - Acknowledgment only
+       - Information request response
+       - Meeting/scheduling response
+       - Technical/ServiceNow response
+       - Question answering
+       - Approval/decision required
+
+    3. What is the urgency level?
+       - High: Urgent matters, incidents, deadlines
+       - Medium: Normal business communications
+       - Low: FYI, non-critical information
+
+    4. Extract key points that need to be addressed in the response
+
+    5. Suggest appropriate tone for response
+  expected_output: >
+    For each email, provide analysis containing: - needs_response: Boolean indicating if response is required - response_type: Type of response needed - urgency: Urgency level (high, medium, low) - key_points: List of key points to address - suggested_tone: Recommended tone for response
+
+generate_email_responses:
+  description: >
+    Generate appropriate email responses for emails that require replies.
+
+    For each email that needs a response: 1. Create a contextually appropriate response based on:
+       - Original email content and intent
+       - Sender's requirements or questions
+       - Appropriate professional tone
+       - Company policies and procedures
+
+    2. Structure the response with:
+       - Appropriate greeting using sender's name when possible
+       - Clear acknowledgment of the original email
+       - Addressing key points from the original message
+       - Providing necessary information or next steps
+       - Professional closing
+
+    3. Ensure responses are:
+       - Professional and courteous
+       - Clear and concise
+       - Actionable when appropriate
+       - Contextually relevant
+       - Grammatically correct
+
+    4. For ServiceNow emails, include:
+       - Acknowledgment of receipt
+       - Expected timeline for resolution/response
+       - Reference to ticket numbers when applicable
+       - Appropriate technical language
+  expected_output: >
+    For each email requiring a response, generate: - Complete email response text ready to send - Suggested subject line (typically "Re: [original subject]") - Response type and tone used - Key points addressed in the response - Timestamp of generation
+
+review_generated_responses:
+  description: >
+    Review all generated email responses for quality, accuracy, and appropriateness.
+
+    Check each response for: 1. Grammar and spelling accuracy 2. Professional tone and language 3. Completeness - addresses all key points from original email 4. Appropriateness of response type and tone 5. Clarity and conciseness 6. Proper email etiquette and formatting 7. Accuracy of technical information (for ServiceNow responses) 8. Potential misunderstandings or ambiguities
+
+    Provide feedback and recommendations for improvement if needed. Approve responses that meet quality standards.
+  expected_output: >
+    Quality review report containing: - Overall quality assessment for each response - Specific feedback on content, tone, and accuracy - Recommended revisions if needed - Approval status (approved/needs revision) - Risk assessment for sending as-is - Best practices recommendations
+
+save_email_results:
+  description: >
+    Save all email processing results to organized output files for review and potential sending.
+
+    Create organized output files containing: 1. Complete email analysis report with original emails and analysis results 2. Generated response files ready for review 3. Processing summary with statistics and overview 4. Quality review results and recommendations
+
+    Organize files by: - Timestamp - Email type (ServiceNow, business, personal) - Priority level - Response status (responded/no response needed)
+
+    Generate summary report showing: - Total emails processed - Number requiring responses - Response types generated - Quality scores - Recommendations for next steps
+  expected_output: >
+    File organization report containing: - List of generated files and their locations - Summary statistics of email processing - Overview of responses generated - Next steps and recommendations for sending responses - Backup and archival information
