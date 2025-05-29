@@ -23,3 +23,58 @@ response_task:
     A report of draft emails saved to the drafts folder, with information about which emails received responses and which did not require a response. Each entry should include the email ID, subject, recipient, and whether a draft was saved.
   agent: response_generator
   output_file: output/response_report.json
+
+analyze_servicenow_email:
+  description: >
+    Analyze the incoming email to determine if it's a ServiceNow notification and extract  all relevant ticket information including ticket number, type, state, priority,  assigned personnel, and any specific actions required.
+
+    Use the GmailReader and ServiceNowEmailParser tools to: 1. Read and parse the email content 2. Identify ServiceNow-specific patterns and information 3. Extract ticket details (number, type, state, priority, assignee, etc.) 4. Determine the nature of the notification (assignment, status change, approval request, etc.) 5. Assess urgency and SLA implications
+
+    Provide a comprehensive analysis including confidence level in the extracted information.
+  expected_output: >
+    A detailed analysis containing: - Confirmation that this is a ServiceNow email (yes/no with confidence %) - Extracted ticket information (number, type, state, priority, etc.) - Type of ServiceNow notification (assignment, update, approval, etc.) - Urgency assessment and SLA considerations - Any special handling requirements identified - Confidence score for the analysis (0-100%)
+  agent: servicenow_email_analyst
+
+determine_response_strategy:
+  description: >
+    Based on the analyzed ServiceNow email and ticket information, determine the most  appropriate response strategy considering business context, urgency, current time, organizational policies, and automation thresholds.
+
+    Use the DateTimeHelper and BusinessHoursCalculator tools to: 1. Check current business hours status 2. Calculate SLA deadlines and time sensitivity 3. Assess if immediate response is required 4. Determine appropriate response type (acknowledgment, status update, etc.) 5. Evaluate if human intervention is needed 6. Consider automation confidence thresholds
+
+    Provide strategic recommendations for handling this specific ServiceNow notification.
+  expected_output: >
+    A strategic response plan including: - Recommended response type (acknowledgment, status_update, resolution, etc.) - Urgency level and timing recommendations - Whether response should be automated or require human review - SLA considerations and deadlines - Stakeholder notification requirements - Risk assessment for automated response - Confidence recommendation for automation (0-100%)
+  agent: response_strategist
+
+generate_email_response:
+  description: >
+    Generate a professional, contextually appropriate email response for the ServiceNow  ticket based on the analysis and strategy. The response should be clear, helpful,  and maintain organizational communication standards.
+
+    Use the ServiceNowResponseGenerator tool to: 1. Create appropriate subject line referencing the ticket number 2. Generate professional email body content 3. Include relevant ticket information and context 4. Provide appropriate next steps or actions 5. Maintain professional tone and organizational voice 6. Include necessary disclaimers or standard information
+
+    Ensure the response adds value and moves the ticket forward appropriately.
+  expected_output: >
+    A complete email response including: - Professional subject line with ticket reference - Well-structured email body with appropriate greeting and closing - Relevant context and ticket information - Clear next steps or actions - Professional tone maintaining organizational standards - Appropriate level of detail for the ticket type - Proper formatting for email delivery
+  agent: content_generator
+
+review_response_quality:
+  description: >
+    Conduct a comprehensive quality review of the generated email response to ensure  it meets professional standards, contains accurate information, and is appropriate  for the ServiceNow context before sending.
+
+    Review for: 1. Grammar, spelling, and professional writing standards 2. Accuracy of ticket information and references 3. Appropriateness of tone and content for the context 4. Completeness of required information 5. Compliance with organizational communication policies 6. Risk assessment for automated sending
+
+    Provide recommendations for improvement or approval for sending.
+  expected_output: >
+    A quality assessment report including: - Overall quality rating (Excellent/Good/Needs Improvement/Reject) - Specific feedback on content, tone, and accuracy - Identification of any errors or issues requiring correction - Risk assessment for automated sending - Recommendation (Send Automatically/Queue for Review/Require Human Intervention) - Confidence score for the response quality (0-100%) - Any suggested improvements or modifications
+  agent: quality_reviewer
+
+coordinate_email_workflow:
+  description: >
+    Orchestrate the complete email processing workflow, manage the flow between tasks, handle exceptions, and make final decisions about response handling based on all analysis, strategy, generation, and quality review inputs.
+
+    Use the GmailSender tool if appropriate to: 1. Consolidate all task outputs and recommendations 2. Apply business rules and automation thresholds 3. Make final decision on response handling 4. Execute approved responses or queue for human review 5. Log workflow completion and any issues 6. Handle exceptions and edge cases appropriately
+
+    Ensure the workflow operates smoothly and maintains quality standards.
+  expected_output: >
+    A comprehensive workflow completion report including: - Summary of all processing steps completed - Final decision made (Sent/Queued/Escalated/Error) - Response delivery status and details - Quality metrics and confidence scores - Any exceptions or issues encountered - Recommendations for process improvement - Complete audit trail of the automation workflow - Performance metrics (processing time, success rate, etc.)
+  agent: workflow_coordinator
