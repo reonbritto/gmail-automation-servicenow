@@ -474,3 +474,20 @@ For support and questions:
 - [ ] Machine learning-based email classification
 - [ ] Integration with other ITSM platforms
 - [ ] Advanced scheduling and automation features
+
+## 🚫 Troubleshooting
+
+### Common Issues
+
+1. **Agent Configuration Error**: Ensure all agents are defined in `agents.yaml`
+2. **Task Configuration Error**: Verify task definitions in `tasks.yaml`
+3. **Gmail API Issues**: Check credentials and API permissions
+4. **Dependency Issues**: Run `uv sync` to install all dependencies
+
+### Debug Mode
+
+Run with debug information:
+
+```bash
+python -m gmail_crew_ai.main --debug
+```
