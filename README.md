@@ -1,202 +1,100 @@
-# ServiceNow Ticket Response Automation with CrewAI
+# ServiceNow Gmail Ticket Automation with CrewAI
 
-This project automates the processing and response generation for ServiceNow tickets received via Gmail, utilizing the CrewAI framework. It aims to streamline IT Service Management (ITSM) by intelligently handling various ticket types, prioritizing responses, and adhering to best practice communication styles.
+This project uses CrewAI to automate the processing of ServiceNow tickets received via Gmail. It identifies ServiceNow notifications, extracts key information, and drafts appropriate responses based on predefined user preferences and ServiceNow best practices.
 
 ## Key Features
 
--   **Automated Ticket Triaging**: Identifies ServiceNow ticket types (Incident, Service Request, Change Request, Problem).
--   **Information Extraction**: Pulls key details from ticket emails (e.g., ticket number, priority, user, description).
--   **Priority-Based Handling**: Assesses urgency and generates responses aligned with Service Level Agreements (SLAs).
--   **Contextual Response Generation**: Creates professional and appropriate responses, including acknowledgments, status updates, information requests, or escalation notices.
--   **ServiceNow Communication Standards**: Adheres to professional ITSM communication styles.
--   **Customizable Knowledge Base**: Leverages `user_preference.txt` for ServiceNow-specific configurations, templates, and escalation paths.
--   **Selective Processing**: Filters out irrelevant notifications (e.g., system maintenance, general announcements).
--   **Draft Generation**: Saves generated responses as drafts for review before sending.
+-   **Automated ServiceNow Ticket Identification**: Detects emails related to ServiceNow tickets (Incidents, Service Requests, etc.).
+-   **Information Extraction**: Parses ticket details such as ticket number, priority, user, and description from email content.
+-   **Contextual Response Generation**: Creates draft replies tailored to ServiceNow ticket types, leveraging templates and guidelines from `knowledge/user_preference.txt`.
+-   **SLA Adherence**: Considers SLA information (to be configured in `user_preference.txt`) for prioritizing and formulating responses.
+-   **Customizable Knowledge Base**: Utilizes `knowledge/user_preference.txt` for ServiceNow instance details, response templates, escalation paths, and communication style guides.
+-   **Drafts for Review**: Saves generated responses as drafts in Gmail for user review before sending.
 
 ## Project Structure
 
-```bash
-# Clone the repository
-git clone https://github.com/reonbritto/email-automation
-cd email-automation
-
-# Create and activate a virtual environment
-python3 -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-
-# Install dependencies
-crewai install
-pip install fastapi uvicorn
+```
+.
+├── README.md                   # This documentation file
+├── pyproject.toml              # Python project configuration
+├── Dockerfile                   # Docker configuration file
+├── src/                        # Source code for the project
+│   └── gmail_crew_ai/
+│       ├── api.py              # FastAPI application
+│       ├── config/
+│       │   ├── agents.yaml     # Agent configurations
+│       │   └── tasks.yaml      # Task configurations
+│       ├── main.py             # Main application entry point
+│       └── ...                 # Other source files
+├── knowledge/                  # Knowledge base for CrewAI
+│   └── user_preference.txt    # User-specific preferences and templates
+├── output/                     # Output files (e.g., fetched emails, drafts)
+└── .env                        # Environment variables (not included in repo)
 ```
 
-## Configuration
+## Installation & Setup
 
-Create a `.env` file in the root directory with the following variables:
+1.  **Clone the repository**:
 
-```
-# Choose your LLM provider
-# OpenAI (Recommended)
-MODEL=openai/gpt-4o-mini
-OPENAI_API_KEY=your_openai_api_key
+    ```bash
+    git clone https://github.com/reonbritto/email-automation
+    cd email-automation
+    ```
 
-# Or Gemini
-# MODEL=gemini/gemini-2.0-flash
-# GEMINI_API_KEY=your_gemini_api_key
+2.  **Create and activate a virtual environment**:
 
-# Gmail credentials
-EMAIL_ADDRESS=your_email@gmail.com
-APP_PASSWORD=your_app_password
-```
+    ```bash
+    python3 -m venv .venv
+    source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+    ```
 
-<details>
-<summary><b>🔑 How to create a Gmail App Password</b></summary>
+3.  **Install dependencies**:
 
-1. Go to your Google Account settings at [myaccount.google.com](https://myaccount.google.com/)
-2. Select **Security** from the left navigation panel
-3. Under "Signing in to Google," find and select **2-Step Verification** (enable it if not already enabled)
-4. Scroll to the bottom and find **App passwords**
-5. Select **Mail** from the "Select app" dropdown
-6. Select **Other (Custom name)** from the "Select device" dropdown
-7. Enter `Gmail CrewAI` as the name
-8. Click **Generate**
-9. Copy the 16-character password that appears (spaces will be removed automatically)
-10. Paste this password in your `.env` file as the `APP_PASSWORD` value
-11. Click **Done**
+    ```bash
+    crewai install
+    pip install fastapi uvicorn
+    ```
 
-**Note**: App passwords can only be created if you have 2-Step Verification enabled on your Google account.
-</details>
+4.  **Configure environment variables**:
 
-## How It Works
+    Create a `.env` file in the root directory with the following variables:
 
-This application uses the IMAP (Internet Message Access Protocol) to securely connect to your Gmail account. Here's how it works:
+    ```
+    # Choose your LLM provider
+    # OpenAI (Recommended)
+    MODEL=openai/gpt-4o-mini
+    OPENAI_API_KEY=your_openai_api_key
 
-<details>
-<summary><b>🔄 IMAP Connection Process</b></summary>
+    # Or Gemini
+    # MODEL=gemini/gemini-2.0-flash
+    # GEMINI_API_KEY=your_gemini_api_key
 
-1. **Secure Connection**: The application establishes a secure SSL connection to Gmail's IMAP server (`imap.gmail.com`).
+    # Gmail credentials
+    EMAIL_ADDRESS=your_email@gmail.com
+    APP_PASSWORD=your_app_password
+    ```
 
-2. **Authentication**: It authenticates using your email address and app password (not your regular Google password).
+    <details>
+    <summary><b>🔑 How to create a Gmail App Password</b></summary>
 
-3. **Mailbox Access**: Once authenticated, it can access your inbox to:
-   - Read unread emails
-   - Save draft responses
+    1.  Go to your Google Account settings at [myaccount.google.com](https://myaccount.google.com/)
+    2.  Select **Security** from the left navigation panel
+    3.  Under "Signing in to Google," find and select **2-Step Verification** (enable it if not already enabled)
+    4.  Scroll to the bottom and find **App passwords**
+    5.  Select **Mail** from the "Select app" dropdown
+    6.  Select **Other (Custom name)** from the "Select device" dropdown
+    7.  Enter `Gmail CrewAI` as the name
+    8.  Click **Generate**
+    9.  Copy the 16-character password that appears (spaces will be removed automatically)
+    10.  Paste this password in your `.env` file as the `APP_PASSWORD` value
+    11.  Click **Done**
 
-4. **Safe Disconnection**: After each operation, the connection is properly closed to maintain security.
+    **Note**: App passwords can only be created if you have 2-Step Verification enabled on your Google account.
+    </details>
 
-IMAP allows the application to work with your emails while they remain on Google's servers, unlike POP3 which would download them to your device. This means you can still access all emails through the regular Gmail interface.
+5.  **Configure ServiceNow-specific settings**:
 
-**Security Note**: Your credentials are only stored locally in your `.env` file and are never shared with any external services.
-</details>
-
-<details>
-<summary><b>🧵 Smart Threading System</b></summary>
-
-1. **Thread Detection**: The system identifies related messages by analyzing Message-ID, References, and In-Reply-To headers.
-
-2. **History Retrieval**: For any email that's part of a thread, the complete conversation history is retrieved.
-
-3. **Chronological Sorting**: All messages in a thread are sorted chronologically for proper context.
-
-4. **Latest Message Tracking**: The system always uses the latest message in a thread for proper reply threading.
-
-5. **Participant Analysis**: All participants in the conversation are identified for context awareness.
-
-This threading system ensures that responses maintain conversation context and appear properly threaded in email clients, creating a seamless experience for both you and your recipients.
-</details>
-
----
-
-## Dataset Details
-
-**Source & Types:**  
-This project does not use a traditional ML dataset. Instead, it operates directly on your Gmail inbox using the IMAP protocol. The "dataset" consists of your real, live email data (subjects, senders, bodies, threads, etc.) fetched securely from Gmail.
-
-**Data Preprocessing:**  
-- Email headers and bodies are decoded and cleaned (HTML tags removed, whitespace normalized).
-- Threading information is extracted using Message-ID, References, and In-Reply-To headers.
-- Emails are categorized (e.g., important, newsletter, etc.) using rule-based logic and, optionally, LLM-powered classification.
-- For model-based features, emails are tokenized and formatted for LLM input.
-
-**Parameters Considered for Model/Agent:**  
-- Email subject, sender, date, body, thread context, and message metadata.
-- Thread history (previous messages in the conversation).
-- User preferences (from a knowledge file, e.g., signature, tone, priorities).
-
-**Target Parameters for Inference:**  
-- Whether a response is needed (binary classification).
-- Drafted reply content (text generation).
-- Suggested labels or actions (categorization).
-
----
-
-## Model Training, Testing & Validation
-
-**Model Training:**  
-- This project leverages pre-trained Large Language Models (LLMs) such as OpenAI GPT-4 or Gemini, accessed via API.
-- No custom supervised training is performed on your emails; instead, prompt engineering and context assembly are used for inference.
-
-**Testing & Validation:**  
-- The system is tested end-to-end using real email samples.
-- Validation is performed by checking if the AI correctly identifies emails needing a response and generates appropriate drafts.
-- Manual review of generated drafts is recommended for quality assurance.
-
-**Model Saving & Format:**  
-- Since LLMs are accessed via API, there is no local model file to save.
-- If you fine-tune or train your own model, save it in a standard format (e.g., HuggingFace `.bin` or `.pt` for PyTorch, `.h5` for TensorFlow).
-
----
-
-## Hardware & Software Requirements
-
-**Hardware:**  
-- For inference: Any modern CPU (cloud VM or local machine). No GPU required for API-based LLMs.
-- For training (if you fine-tune): GPU recommended (NVIDIA with CUDA support).
-
-**Software:**  
-- Python 3.8+
-- Required packages: `crewai`, `fastapi`, `uvicorn`, `pydantic`, `requests`, `beautifulsoup4`, etc.
-- Access to OpenAI, Gemini, or Azure OpenAI API for LLM inference.
-
----
-
-## Metrics & Model Evaluation
-
-**Metrics Used:**  
-- **Response Accuracy:** Percentage of emails correctly identified as needing a response.
-- **Draft Quality:** Manual review for tone, relevance, and completeness.
-- **Threading Accuracy:** Replies appear correctly threaded in Gmail.
-- **Latency:** Time to generate a draft (should be <10s per email).
-
-**Why This Model:**  
-- LLMs provide state-of-the-art performance for text understanding and generation.
-- Rule-based filters ensure only relevant emails are processed, reducing noise.
-
----
-
-## Model Inference Details
-
-- Inference is performed by sending email context (subject, body, thread history) to the LLM via API.
-- The LLM returns a draft reply, which is then saved as a Gmail draft.
-- No email data is stored outside your environment; all processing is local except for LLM API calls.
-
----
-
-## High-Level Architecture Diagram
-
-```
-+-------------------+       +-------------------+       +-------------------+
-|   Gmail Inbox     |<----->|   CrewAI System   |<----->|    LLM API        |
-| (via IMAP/SMTP)   |       | (Python, FastAPI) |       | (OpenAI/Gemini)   |
-+-------------------+       +-------------------+       +-------------------+
-         |                          |                             |
-         |<-----User Preferences----|                             |
-         |                          |                             |
-         |<-----API Requests/CLI----|                             |
-         |                          |                             |
-         |<-----Drafts Saved--------|                             |
-```
-
----
+    Update `knowledge/user_preference.txt` with your ServiceNow instance details, SLA guidelines, response templates for ticket types (Incident, Request), and escalation procedures.
 
 ## Usage
 
@@ -244,8 +142,6 @@ The FastAPI server provides the following endpoints:
   - Query param: `email_limit`
   - Example: `curl -X POST http://localhost:8000/crew/run?email_limit=5`
 
----
-
 ## End-to-End Testing
 
 1. **Fetch Unread Emails:**  
@@ -267,8 +163,6 @@ The FastAPI server provides the following endpoints:
 5. **API Testing:**  
    - Use Swagger UI at `/docs` to test all endpoints interactively.
 
----
-
 ## Special Features
 
 - **🧠 Smart Response Generation**: The AI intelligently determines which emails actually need responses
@@ -284,23 +178,26 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## Running with Docker
 
-1. **Build the Docker image:**
-   ```bash
-   docker build -t gmail-crewai-app .
-   ```
+1.  **Build the Docker image**:
 
-2. **Run the container (with your .env file):**
-   ```bash
-   docker run -d --env-file .env -p 8000:8000 gmail-crewai-app
-   ```
+    ```bash
+    docker build -t gmail-crewai-app .
+    ```
 
-   - The API will be available at: [http://localhost:8000/docs](http://localhost:8000/docs)
-   - If running on a remote server, replace `localhost` with your server's IP.
+2.  **Run the container (with your .env file)**:
 
-3. **(Optional) Mount output directory:**
-   ```bash
-   docker run -d --env-file .env -p 8000:8000 -v $(pwd)/output:/app/output gmail-crewai-app
-   ```
+    ```bash
+    docker run -d --env-file .env -p 8000:8000 gmail-crewai-app
+    ```
+
+    - The API will be available at: [http://localhost:8000/docs](http://localhost:8000/docs)
+    - If running on a remote server, replace `localhost` with your server's IP.
+
+3.  **(Optional) Mount output directory**:
+
+    ```bash
+    docker run -d --env-file .env -p 8000:8000 -v $(pwd)/output:/app/output gmail-crewai-app
+    ```
 
 **Notes:**
 - Ensure your `.env` file is in the project root and contains all required secrets.

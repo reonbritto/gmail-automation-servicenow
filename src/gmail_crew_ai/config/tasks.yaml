@@ -1,37 +1,35 @@
 servicenow_ticket_response_task:
   description: >
-    Process ServiceNow ticket notifications fetched from Gmail (assumed to be available from a before_kickoff step, e.g., in 'output/fetched_emails.json'). The 'user_preference.txt' knowledge file contains ServiceNow instance details, SLA guidelines, and response templates.
+    Process ServiceNow ticket notifications received via Gmail. The email data is assumed to be available (e.g., from a 'before_kickoff' step or passed directly). The 'user_preference.txt' knowledge file contains ServiceNow instance details, SLA guidelines, and response templates.
 
-    For each ServiceNow ticket email:
-      1. **Identify Ticket Type**: Determine if it's an Incident (INC), Service Request (REQ), Change Request (CHG), or Problem (PRB) based on email subject and body.
+    For each relevant ServiceNow ticket email:
+      1. **Identify Ticket Type**: Determine if it's an Incident (INC), Service Request (REQ), Change Request (CHG), Problem (PRB), or other ServiceNow notification based on email subject and body patterns.
       2. **Extract Key Information**:
          - Ticket number (e.g., INC0001234, REQ0005678)
          - Priority/Urgency level (e.g., P1, P2, High, Medium)
          - Affected user/requester name or email
-         - Brief description of the issue or request
-         - Current status if mentioned (e.g., New, In Progress, Pending)
-      3. **Assess Response Requirements based on 'user_preference.txt'**:
-         - Refer to 'Response Priority' and 'SLA EXPECTATIONS' sections in 'user_preference.txt'.
-         - CRITICAL (e.g., P1/P2 incidents, system outages): Requires immediate acknowledgment.
-         - HIGH (e.g., P3 incidents, change approvals): Requires prompt attention.
-         - MEDIUM (e.g., Service requests): Standard processing.
-         - LOW (e.g., General inquiries): Standard processing.
+         - Brief description of the issue or request from the email
+         - Current status if mentioned (e.g., New, In Progress, Awaiting User Info)
+      3. **Assess if a Response is Needed**:
+         - Prioritize emails that are direct communications or updates requiring acknowledgment or action.
+         - Refer to 'user_preference.txt' for guidance on which notification types to ignore (e.g., automated system updates not requiring action, bulk notifications).
       4. **Generate Appropriate Response using 'user_preference.txt' templates**:
-         - Utilize templates from 'Ticket Response Templates' section (e.g., Incident Acknowledgment, Request Fulfillment).
-         - Acknowledge receipt within SLA timeframes.
-         - Provide status updates or request additional information if needed.
-         - Offer initial troubleshooting steps if applicable and defined.
-         - Escalate if necessary, based on priority, complexity, and 'ESCALATION PROCEDURES' in 'user_preference.txt'.
+         - If a response is needed, utilize templates from the 'Ticket Response Templates' section in 'user_preference.txt'.
+         - Examples: Acknowledge receipt, provide a standard update, request more information, confirm resolution.
+         - Tailor the response based on extracted information (ticket number, user name, issue description).
+         - Ensure the response adheres to the communication style defined in 'user_preference.txt'.
       5. **Use Professional ServiceNow Communication Style**:
-         - Ensure the ticket number is in the subject line of the reply.
-         - Reference SLA commitments where appropriate.
-         - Provide clear next steps for the user.
-         - Use appropriate technical terminology.
-         - Include relevant knowledge base article links if helpful (from 'Knowledge Base References' in 'user_preference.txt').
+         - Ensure the ticket number is in the subject line of the reply (e.g., "Re: INC0001234 - Issue with VPN").
+         - Reference SLA commitments if appropriate and defined in templates.
+         - Provide clear next steps for the user if applicable.
+      6. **Save Draft**: Use the 'save_email_draft' tool for all generated responses.
+         - Subject: "Re: [Original Subject]" (or a more specific subject including ticket number).
+         - Body: The generated response.
+         - Recipient: The original sender of the ServiceNow email (or relevant party).
 
-    IMPORTANT: - Only respond to legitimate ServiceNow ticket notifications that require action. - Skip emails that are purely informational and don't require a direct response from you (e.g., ServiceNow system maintenance notifications, training announcements, general ServiceNow community emails, automated reports not needing action). - Use the 'save_email_draft' tool for all generated responses. The subject should be "Re: [Original Subject]" and the recipient should be the original sender of the ticket email.
+    IMPORTANT: - Only respond to actionable ServiceNow ticket notifications. - Filter out purely informational ServiceNow system emails or general announcements that don't require a direct reply from this automated system, based on guidelines in 'user_preference.txt'.
 
   expected_output: >
-    A comprehensive JSON report detailing the ServiceNow tickets processed. Each entry in the report should include: - Original Email ID and Subject. - Extracted Ticket Number and Type (INC/REQ/CHG/PRB). - Assessed Priority. - Action Taken: (e.g., "Drafted Acknowledgment", "Drafted Information Request", "Skipped - Informational", "Marked for Escalation Review"). - Recipient of the draft. - Filename of the saved draft if one was created. - Brief summary of the response generated or reason for skipping. - Any identified escalation needs based on 'user_preference.txt'. The report should be saved to the specified output file.
+    A JSON report detailing the ServiceNow emails processed. Each entry in the report should include: - Original Email ID and Subject. - Extracted Ticket Number (if any) and identified Type (e.g., INC, REQ, Informational). - Assessed Priority (if applicable). - Action Taken: (e.g., "Drafted Acknowledgment for INC001234", "Drafted Info Request for REQ005678", "Skipped - Informational Notification"). - Recipient of the draft if one was created. - Filename/ID of the saved draft if one was created. - Brief summary of the response generated or reason for skipping.
   agent: response_generator
   output_file: output/servicenow_ticket_report.json
