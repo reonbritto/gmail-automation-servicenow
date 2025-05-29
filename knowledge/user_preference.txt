@@ -1,87 +1,38 @@
-# NOTE: This file provides general reference information for the ServiceNow developer (Alex Chen).
-# The AI email assistant will primarily use its underlying Large Language Model (e.g., Gemini)
-# capabilities for understanding context and generating responses, referring to this file for high-level background if needed.
+# PERSONAL INFORMATION
+Name: John Doe
+Profession: AI Engineer
+Company: TechInnovate AI (Senior Engineer)
+Location: San Francisco, California
+Timezone: Pacific Time (UTC-8/UTC-7 during DST)
 
-# DEVELOPER PROFILE
-Developer Name: Alex Chen (ServiceNow Developer)
-Team: Platform Engineering
-Company: Innovate Solutions Ltd.
-Location: Austin, Texas
-Timezone: Central Time (UTC-6/UTC-5 during DST)
+# INTERESTS & EXPERTISE
+Primary Interests: AI Agents, Large Language Models, Reinforcement Learning
+Secondary Interests: Computer Vision, Robotics, Edge Computing
+Programming Languages: Python, TypeScript, Rust
+Frameworks: TensorFlow, PyTorch, LangChain, CrewAI
 
-# SERVICENOW INSTANCE DETAILS
-Development Instance: https://innovatedev.service-now.com
-Test/QA Instance: https://innovatetest.service-now.com
-Production Instance: https://innovate.service-now.com
-Primary PDI (Personal Developer Instance): https://dev12345.service-now.com (Use for quick tests)
+# COMMUNICATION PREFERENCES
+Preferred Name: John
+Email Style: Professional but conversational
+Response Priority:
+  - High: Client requests, team questions, project deadlines
+  - Medium: Industry connections, networking, conference invitations
+  - Low: Newsletters, marketing emails, unsolicited sales
 
-# CODING STANDARDS & BEST PRACTICES
-Scripting Language: JavaScript (ES5/ES6 features where supported by ServiceNow version)
-Code Comments: Mandatory for complex logic and all public functions/Script Includes.
-Naming Conventions:
-  - Business Rules: BR - [Table] - [Short Description] (e.g., BR - Incident - Set Caller Location)
-  - Script Includes: SI - [UtilityName] (e.g., SI - UserUtils)
-  - Client Scripts: CS - [Table] - [Action] (e.g., CS - Incident - Validate Priority)
-  - Update Sets: [Story/Task ID]_[DeveloperInitials]_[ShortDescription]_[Version] (e.g., STR00123_AC_IncidentEnhancements_v1.0)
-Error Handling: Use try-catch blocks for external API calls and complex server-side scripts. Log errors using gs.error().
-Performance: Avoid GlideRecord in loops where possible. Use GlideAggregate for counts/sums. Be mindful of synchronous GlideAjax calls.
+# AVAILABILITY
+Working Hours: Monday-Friday, 9:00 AM - 6:00 PM PT
+Meeting Preferences: Mornings for important discussions, afternoons for routine check-ins
+Regular Commitments: Team standup (Daily 10:00 AM), Research review (Thursdays 2:00 PM)
 
-# COMMON SCRIPTS & API NOTES
-## GlideRecord Examples
-Querying Incidents:
-  var grIncident = new GlideRecord('incident');
-  grIncident.addQuery('active', true);
-  grIncident.addQuery('priority', 1);
-  grIncident.query();
-  while (grIncident.next()) {
-    gs.info('Incident Number: ' + grIncident.getValue('number'));
-  }
+# EMAIL ORGANIZATION
+Label Preferences:
+  - Work: Professional communications
+  - Projects: Ongoing project discussions
+  - Learning: Educational content and courses
+  - Networking: Industry connections and events
+  - Personal: Non-work related emails
 
-Creating a Task:
-  var grTask = new GlideRecord('task');
-  grTask.initialize();
-  grTask.setValue('short_description', 'New task created via script');
-  grTask.setValue('assignment_group', 'sys_id_of_service_desk_group'); // Replace with actual sys_id
-  var taskSysId = grTask.insert();
-  gs.info('New task created: ' + taskSysId);
-
-## Script Include Usage
-Example Script Include 'MyDateTimeUtils':
-  var MyDateTimeUtils = Class.create();
-  MyDateTimeUtils.prototype = {
-      initialize: function() {
-      },
-      getFormattedCurrentDateTime: function() {
-          var gdt = new GlideDateTime();
-          return gdt.getDisplayValue();
-      },
-      type: 'MyDateTimeUtils'
-  };
-
-Calling it:
-  var dtUtils = new global.MyDateTimeUtils(); // Use 'global.' if calling from scoped app to global
-  var now = dtUtils.getFormattedCurrentDateTime();
-  gs.info(now);
-
-## REST API Integration
-Common Endpoint (Example): /api/now/table/{tableName}
-Authentication: Basic Auth or OAuth (check instance security settings)
-Headers:
-  - Accept: application/json
-  - Content-Type: application/json
-Note: Always use a dedicated integration user with minimal necessary roles.
-
-# COMMUNICATION STYLE (General Preference for Drafts)
-Tone: Technical, professional, and collaborative.
-Signature for Drafts (General Style):
-  Best regards,
-  Alex Chen
-  ServiceNow Developer
-  Innovate Solutions Ltd.
-
-# GENERAL EMAIL HANDLING NOTES (For User Reference)
-# The AI will use its judgment for triaging and response based on email content and its ServiceNow knowledge.
-# High Priority Keywords (Examples for user awareness): "URGENT", "Production Issue", "Build Failed", "Critical Defect", "Security Alert"
-# Medium Priority (Examples for user awareness): "Code Review Request", "API Question", "Deployment Notification", "Test Results"
-# Low Priority (Examples for user awareness): General announcements, non-critical system updates, FYI emails.
-# Typically Ignore: Marketing, general newsletters, out-of-office replies unless directly relevant to development tasks.
+# RESPONSE TEMPLATES
+Meeting Request: "I'm available [suggest 2-3 time slots]. Would any of these work for you? Alternatively, you can book directly on my calendar: [calendar_link]"
+Follow-up Timing: "I'll follow up on this by [day/date], once I've had a chance to review the details."
+Delay Apology: "I apologize for the delayed response. I've been focused on [current project/general reason]."

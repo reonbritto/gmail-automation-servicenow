@@ -1,28 +1,14 @@
 response_task:
   description: >
-    Process emails relevant to a ServiceNow Developer using your advanced understanding as an AI assistant (e.g., powered by Gemini). The email data is assumed to be available (e.g., from 'output/fetched_emails.json'). The 'knowledge/user_preference.txt' file provides general context about the developer's environment but you should primarily rely on your LLM capabilities for response generation.
+    For each incoming ServiceNow ticket email:
+      - Analyze the ticket content using your LLM capabilities.
+      - If a reply is needed (e.g., the ticket requires clarification, status update, or technical input), draft a professional and relevant response.
+      - If no reply is needed (e.g., informational, automated, or resolved tickets), skip responding.
 
-    For each relevant email:
-      1. **Analyze Content**: Determine the nature of the email (e.g., technical query, code review request, API question, deployment notification, build status) using your understanding of ServiceNow development.
-      2. **Assess if Actionable**: Prioritize emails requiring a technical response, clarification, or acknowledgment based on common ServiceNow developer workflows.
-      3. **Formulate Response (if needed)**:
-         - If a response is needed, leverage your knowledge of ServiceNow (instance concepts, coding standards, API best practices, GlideRecord, Business Rules, Script Includes, etc.) to draft a technically sound and professional reply.
-         - Address specific technical points raised in the email with accuracy.
-         - If a query is about a script, apply best practices for ServiceNow scripting.
-         - If it's a code review feedback, summarize points or draft an acknowledgment professionally.
-         - You can infer typical developer preferences (like signature style) from the general context provided in 'knowledge/user_preference.txt' if needed, but prioritize natural and contextually appropriate responses.
-      4. **Use Developer Communication Style**:
-         - Maintain a clear, concise, and technical tone appropriate for ServiceNow developers.
-         - Include relevant technical details (e.g., script names, table names, sys_ids if appropriate and safe).
-         - A general signature style might be noted in 'knowledge/user_preference.txt'; adapt it naturally.
-      5. **Save Draft**: Use the 'save_email_draft' tool for all generated responses.
-         - Subject: "Re: [Original Subject]" (or a more specific subject if appropriate, e.g., "Re: Query about [Script Name]").
-         - Body: The generated response.
-         - Recipient: The original sender.
+    Use your knowledge of ServiceNow ticket workflows and best practices. Only reply when your LLM analysis determines a response is appropriate.
 
-    IMPORTANT: - Focus on emails directly related to ServiceNow development, administration, or platform issues. - Filter out general IT support requests, HR emails, or non-technical communications unless your analysis deems them relevant to the developer's role.
-
+    Save all drafted replies as email drafts for review.
   expected_output: >
-    A JSON report detailing the emails processed. Each entry should include: - Original Email ID and Subject. - Categorization of the email (e.g., "Technical Query", "Code Review", "Deployment Info", "General Dev Comms"). - Action Taken: (e.g., "Drafted response for API query", "Acknowledged code review feedback", "Skipped - Non-actionable notification"). - Recipient of the draft if one was created. - Filename/ID of the saved draft if one was created. - Brief summary of the response generated or reason for skipping.
+    A summary report listing each ticket email processed, indicating whether a reply draft was created or if no reply was needed. Include ticket ID, subject, recipient, and action taken.
   agent: response_generator
   output_file: output/response_report.json
