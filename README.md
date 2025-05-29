@@ -467,14 +467,6 @@ For support and questions:
 - Check the documentation
 - Review the configuration files
 
-## 🔮 Future Enhancements
-
-- [ ] Support for multiple email providers
-- [ ] Advanced ServiceNow integration
-- [ ] Machine learning-based email classification
-- [ ] Integration with other ITSM platforms
-- [ ] Advanced scheduling and automation features
-
 ## 🚫 Troubleshooting
 
 ### Common Issues
@@ -491,3 +483,11 @@ Run with debug information:
 ```bash
 python -m gmail_crew_ai.main --debug
 ```
+
+## 🔮 Future Enhancements
+
+- [ ] Support for multiple email providers
+- [ ] Advanced ServiceNow integration
+- [ ] Machine learning-based email classification
+- [ ] Integration with other ITSM platforms
+- [ ] Advanced scheduling and automation features
