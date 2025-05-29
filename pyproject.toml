@@ -1,22 +1,12 @@
 [project]
 name = "gmail_crew_ai"
 version = "0.1.0"
-description = "ServiceNow ticket response automation using CrewAI and Gmail"
+description = "ServiceNow Developer Email Assistant using CrewAI"
 authors = [{ name = "Your Name", email = "you@example.com" }]
 requires-python = ">=3.10,<3.13"
 dependencies = [
-    "bs4>=0.0.2",  # beautifulsoup4 is bs4
+    "bs4>=0.0.2",
     "crewai[tools]>=0.102.0,<1.0.0",
-    "fastapi>=0.115.0",
-    "uvicorn>=0.34.0",
-    "python-dotenv>=1.0.0",
-    "pydantic>=2.10.0",  # crewai likely pulls this, but good to be explicit
-    "requests>=2.32.0",  # crewai tools might use this
-    "imaplib2>=2.57",  # For email fetching
-    # Add other specific dependencies if your tools require them e.g. for Gmail API:
-    # "google-api-python-client",
-    # "google-auth-httplib2",
-    # "google-auth-oauthlib",
 ]
 
 [project.scripts]

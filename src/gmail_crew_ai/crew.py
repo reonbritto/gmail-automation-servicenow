@@ -97,7 +97,7 @@ class GmailCrewAi():
 	def response_task(self) -> Task:
 		"""The email response task."""
 		return Task(
-			config=self.tasks_config['servicenow_ticket_response_task'],
+			config=self.tasks_config['response_task'],
 			# Use EmailResponseList instead of List[EmailResponse]
 			output_pydantic=EmailResponseList,
 		)

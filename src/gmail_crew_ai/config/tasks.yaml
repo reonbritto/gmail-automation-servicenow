@@ -1,35 +1,33 @@
-servicenow_ticket_response_task:
+response_task:
   description: >
-    Process ServiceNow ticket notifications received via Gmail. The email data is assumed to be available (e.g., from a 'before_kickoff' step or passed directly). The 'user_preference.txt' knowledge file contains ServiceNow instance details, SLA guidelines, and response templates.
+    Process emails relevant to a ServiceNow Developer. The email data is assumed to be available (e.g., from 'output/fetched_emails.json'). The 'user_preference.txt' knowledge file contains ServiceNow developer-specific notes, instance details, coding standards, and common script patterns.
 
-    For each relevant ServiceNow ticket email:
-      1. **Identify Ticket Type**: Determine if it's an Incident (INC), Service Request (REQ), Change Request (CHG), Problem (PRB), or other ServiceNow notification based on email subject and body patterns.
-      2. **Extract Key Information**:
-         - Ticket number (e.g., INC0001234, REQ0005678)
-         - Priority/Urgency level (e.g., P1, P2, High, Medium)
-         - Affected user/requester name or email
-         - Brief description of the issue or request from the email
-         - Current status if mentioned (e.g., New, In Progress, Awaiting User Info)
-      3. **Assess if a Response is Needed**:
-         - Prioritize emails that are direct communications or updates requiring acknowledgment or action.
-         - Refer to 'user_preference.txt' for guidance on which notification types to ignore (e.g., automated system updates not requiring action, bulk notifications).
-      4. **Generate Appropriate Response using 'user_preference.txt' templates**:
-         - If a response is needed, utilize templates from the 'Ticket Response Templates' section in 'user_preference.txt'.
-         - Examples: Acknowledge receipt, provide a standard update, request more information, confirm resolution.
-         - Tailor the response based on extracted information (ticket number, user name, issue description).
-         - Ensure the response adheres to the communication style defined in 'user_preference.txt'.
-      5. **Use Professional ServiceNow Communication Style**:
-         - Ensure the ticket number is in the subject line of the reply (e.g., "Re: INC0001234 - Issue with VPN").
-         - Reference SLA commitments if appropriate and defined in templates.
-         - Provide clear next steps for the user if applicable.
-      6. **Save Draft**: Use the 'save_email_draft' tool for all generated responses.
-         - Subject: "Re: [Original Subject]" (or a more specific subject including ticket number).
+    For each relevant email:
+      1. **Analyze Content**: Determine the nature of the email (e.g., technical query, code review request, API question, deployment notification, build status).
+      2. **Assess if Actionable**: Prioritize emails requiring a technical response, clarification, or acknowledgment.
+         - Refer to 'user_preference.txt' for guidance on triaging emails (e.g., keywords for urgent issues, typical response patterns for common queries).
+      3. **Formulate Response (if needed)**:
+         - If a response is needed, consult 'user_preference.txt' for relevant information:
+           - ServiceNow instance URLs (Dev, Test, Prod).
+           - Links to internal coding standards or API documentation.
+           - Common script snippets or GlideRecord examples.
+           - Standard acknowledgments for deployment notifications.
+         - Draft a technically sound and professional reply.
+         - Address specific technical points raised in the email.
+         - If a query is about a script, refer to best practices for GlideRecord, Business Rules, Script Includes, etc.
+         - If it's a code review feedback, summarize points or draft an acknowledgment.
+      4. **Use Developer Communication Style**:
+         - Maintain a clear, concise, and technical tone.
+         - Include relevant technical details (e.g., script names, table names, sys_ids if appropriate and safe).
+         - Use the signature defined in 'user_preference.txt'.
+      5. **Save Draft**: Use the 'save_email_draft' tool for all generated responses.
+         - Subject: "Re: [Original Subject]" (or a more specific subject if appropriate, e.g., "Re: Query about [Script Name]").
          - Body: The generated response.
-         - Recipient: The original sender of the ServiceNow email (or relevant party).
+         - Recipient: The original sender.
 
-    IMPORTANT: - Only respond to actionable ServiceNow ticket notifications. - Filter out purely informational ServiceNow system emails or general announcements that don't require a direct reply from this automated system, based on guidelines in 'user_preference.txt'.
+    IMPORTANT: - Focus on emails directly related to ServiceNow development, administration, or platform issues. - Filter out general IT support requests, HR emails, or non-technical communications unless specified in 'user_preference.txt'.
 
   expected_output: >
-    A JSON report detailing the ServiceNow emails processed. Each entry in the report should include: - Original Email ID and Subject. - Extracted Ticket Number (if any) and identified Type (e.g., INC, REQ, Informational). - Assessed Priority (if applicable). - Action Taken: (e.g., "Drafted Acknowledgment for INC001234", "Drafted Info Request for REQ005678", "Skipped - Informational Notification"). - Recipient of the draft if one was created. - Filename/ID of the saved draft if one was created. - Brief summary of the response generated or reason for skipping.
+    A JSON report detailing the emails processed. Each entry should include: - Original Email ID and Subject. - Categorization of the email (e.g., "Technical Query", "Code Review", "Deployment Info", "General Dev Comms"). - Action Taken: (e.g., "Drafted response for API query", "Acknowledged code review feedback", "Skipped - Non-actionable notification"). - Recipient of the draft if one was created. - Filename/ID of the saved draft if one was created. - Brief summary of the response generated or reason for skipping.
   agent: response_generator
-  output_file: output/servicenow_ticket_report.json
+  output_file: output/response_report.json

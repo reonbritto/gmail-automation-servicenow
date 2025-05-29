@@ -17,7 +17,7 @@ RUN apt-get update && \
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
-# Upgrade pip and install Python dependencies for ServiceNow Gmail automation
+# Upgrade pip and install Python dependencies
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir \
         fastapi \
@@ -35,7 +35,6 @@ COPY ./src ./src
 COPY pyproject.toml uv.lock ./
 
 # Optionally install crewai dependencies if pyproject.toml exists
-# This step ensures tools and other crew-specific items are set up for ServiceNow automation.
 RUN if [ -f pyproject.toml ]; then crewai install || true; fi
 
 # Start second stage with clean image
@@ -51,15 +50,11 @@ ENV PYTHONPATH=/app/src
 # Set work directory
 WORKDIR /app
 
-# Copy application source code for ServiceNow Gmail automation
+# Copy application source code
 COPY ./src ./src
-# Copy knowledge file
-COPY ./knowledge ./knowledge
 
-# Expose FastAPI port (if an API is part of the application)
+# Expose FastAPI port
 EXPOSE 8000
 
-# Start FastAPI server (assuming gmail_crew_ai.api:app is the entry point for an API)
-# If running as a script, this CMD would be different (e.g., ["python", "src/gmail_crew_ai/main.py"])
-# Ensure your main.py or api.py is correctly set up for this CMD.
+# Start FastAPI server
 CMD ["uvicorn", "gmail_crew_ai.api:app", "--host", "0.0.0.0", "--port", "8000"]

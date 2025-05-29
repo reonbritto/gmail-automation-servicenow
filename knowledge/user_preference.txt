@@ -1,153 +1,112 @@
-# PERSONAL INFORMATION
-Name: John Doe
-Profession: AI Engineer
-Company: TechInnovate AI (Senior Engineer)
-Location: San Francisco, California
-Timezone: Pacific Time (UTC-8/UTC-7 during DST)
+# DEVELOPER PROFILE
+Developer Name: Alex Chen (ServiceNow Developer)
+Team: Platform Engineering
+Company: Innovate Solutions Ltd.
+Location: Austin, Texas
+Timezone: Central Time (UTC-6/UTC-5 during DST)
 
-# INTERESTS & EXPERTISE
-Primary Interests: AI Agents, Large Language Models, Reinforcement Learning
-Secondary Interests: Computer Vision, Robotics, Edge Computing
-Programming Languages: Python, TypeScript, Rust
-Frameworks: TensorFlow, PyTorch, LangChain, CrewAI
+# SERVICENOW INSTANCE DETAILS
+Development Instance: https://innovatedev.service-now.com
+Test/QA Instance: https://innovatetest.service-now.com
+Production Instance: https://innovate.service-now.com
+Primary PDI (Personal Developer Instance): https://dev12345.service-now.com (Use for quick tests)
 
-# COMMUNICATION PREFERENCES
-Preferred Name: John
-Email Style: Professional but conversational
-Response Priority:
-  - High: Client requests, team questions, project deadlines
-  - Medium: Industry connections, networking, conference invitations
-  - Low: Newsletters, marketing emails, unsolicited sales
+# CODING STANDARDS & BEST PRACTICES
+Scripting Language: JavaScript (ES5/ES6 features where supported by ServiceNow version)
+Code Comments: Mandatory for complex logic and all public functions/Script Includes.
+Naming Conventions:
+  - Business Rules: BR - [Table] - [Short Description] (e.g., BR - Incident - Set Caller Location)
+  - Script Includes: SI - [UtilityName] (e.g., SI - UserUtils)
+  - Client Scripts: CS - [Table] - [Action] (e.g., CS - Incident - Validate Priority)
+  - Update Sets: [Story/Task ID]_[DeveloperInitials]_[ShortDescription]_[Version] (e.g., STR00123_AC_IncidentEnhancements_v1.0)
+Error Handling: Use try-catch blocks for external API calls and complex server-side scripts. Log errors using gs.error().
+Performance: Avoid GlideRecord in loops where possible. Use GlideAggregate for counts/sums. Be mindful of synchronous GlideAjax calls.
 
-# AVAILABILITY
-Working Hours: Monday-Friday, 9:00 AM - 6:00 PM PT
-Meeting Preferences: Mornings for important discussions, afternoons for routine check-ins
-Regular Commitments: Team standup (Daily 10:00 AM), Research review (Thursdays 2:00 PM)
+# COMMON SCRIPTS & API NOTES
+## GlideRecord Examples
+Querying Incidents:
+  var grIncident = new GlideRecord('incident');
+  grIncident.addQuery('active', true);
+  grIncident.addQuery('priority', 1);
+  grIncident.query();
+  while (grIncident.next()) {
+    gs.info('Incident Number: ' + grIncident.getValue('number'));
+  }
 
-# EMAIL ORGANIZATION
-Label Preferences:
-  - Work: Professional communications
-  - Projects: Ongoing project discussions
-  - Learning: Educational content and courses
-  - Networking: Industry connections and events
-  - Personal: Non-work related emails
+Creating a Task:
+  var grTask = new GlideRecord('task');
+  grTask.initialize();
+  grTask.setValue('short_description', 'New task created via script');
+  grTask.setValue('assignment_group', 'sys_id_of_service_desk_group'); // Replace with actual sys_id
+  var taskSysId = grTask.insert();
+  gs.info('New task created: ' + taskSysId);
 
-# RESPONSE TEMPLATES
-Meeting Request: "I'm available [suggest 2-3 time slots]. Would any of these work for you? Alternatively, you can book directly on my calendar: [calendar_link]"
-Follow-up Timing: "I'll follow up on this by [day/date], once I've had a chance to review the details."
-Delay Apology: "I apologize for the delayed response. I've been focused on [current project/general reason]."
+## Script Include Usage
+Example Script Include 'MyDateTimeUtils':
+  var MyDateTimeUtils = Class.create();
+  MyDateTimeUtils.prototype = {
+      initialize: function() {
+      },
+      getFormattedCurrentDateTime: function() {
+          var gdt = new GlideDateTime();
+          return gdt.getDisplayValue();
+      },
+      type: 'MyDateTimeUtils'
+  };
 
-# PERSONAL INFORMATION (ServiceNow Context)
-Service Desk Team Name: Alpha IT Support
-ServiceNow User for Automation (If applicable): servicenow.automation@example.com
-Company: YourCompanyName
-Location: YourCity, YourState
-Timezone: YourTimezone (e.g., Eastern Time UTC-5/UTC-4)
+Calling it:
+  var dtUtils = new global.MyDateTimeUtils(); // Use 'global.' if calling from scoped app to global
+  var now = dtUtils.getFormattedCurrentDateTime();
+  gs.info(now);
 
-# SERVICENOW ENVIRONMENT DETAILS
-ServiceNow Instance URL: https://yourcompany.service-now.com
-Key Contacts for Escalation:
-  - Tier 2 Support Lead: t2lead@example.com
-  - IT Service Manager: itsm.manager@example.com
-Default Assignment Group (for reference): Service Desk
+## REST API Integration
+Common Endpoint (Example): /api/now/table/{tableName}
+Authentication: Basic Auth or OAuth (check instance security settings)
+Headers:
+  - Accept: application/json
+  - Content-Type: application/json
+Note: Always use a dedicated integration user with minimal necessary roles.
 
-# COMMUNICATION PREFERENCES FOR SERVICENOW TICKETS
-Email Style: Professional, empathetic, and clear. Always include the ticket number in responses.
+# COMMUNICATION STYLE (for drafted emails)
+Tone: Technical, professional, and collaborative.
 Signature for Drafts:
   Best regards,
-  [Your Name/Service Desk Team Name]
-  YourCompanyName Support
+  Alex Chen
+  ServiceNow Developer
+  Innovate Solutions Ltd.
 
-# SERVICENOW TICKET HANDLING GUIDELINES
-Ignored Notification Types (Keywords or Subject Patterns to Skip):
-  - "ServiceNow System Maintenance Scheduled"
-  - "Knowledge Base Article Updated"
-  - "Survey Request for ticket" (unless specifically configured to handle)
-  - "Bulk notification:"
-  - "FYI:"
-  - Meeting invites related to tickets (unless direct action needed from this automation)
+# EMAIL TRIAGE GUIDELINES (for agent)
+High Priority Keywords: "URGENT", "Production Issue", "Build Failed", "Critical Defect", "Security Alert"
+Medium Priority: "Code Review Request", "API Question", "Deployment Notification", "Test Results"
+Low Priority: General announcements, non-critical system updates, FYI emails.
+Ignore: Marketing, newsletters (unless ServiceNow tech-specific), out-of-office replies.
 
-Response Priority (General Guidance, adapt based on email content):
-  - Critical (P1/P2 Incidents): Requires immediate acknowledgment if email indicates new or urgent update.
-  - High (P3 Incidents, Urgent Requests): Prompt acknowledgment.
-  - Medium (Standard Service Requests, P4 Incidents): Standard acknowledgment.
-  - Low (General Inquiries related to existing tickets): Acknowledge as per template.
-
-# TICKET RESPONSE TEMPLATES (Use placeholders like [TICKET_NUMBER], [USER_NAME], [ISSUE_DESCRIPTION], [STATUS_UPDATE])
-
-## Incident Management
-Incident Acknowledgment (New P1/P2):
-  Subject: Re: INC[TICKET_NUMBER] - Urgent Issue Reported
+# RESPONSE TEMPLATES (Developer Context)
+Acknowledging a Technical Query:
+  Subject: Re: [Original Subject]
   Body:
-  Dear [USER_NAME],
+  Hi [Sender Name],
 
-  This email confirms receipt of Incident [TICKET_NUMBER] regarding "[ISSUE_DESCRIPTION]".
-  We understand this is a critical issue and our team is actively investigating with the highest priority.
-  You will receive an update within [SLA_RESPONSE_TIME_P1/P2, e.g., 15 minutes/1 hour] or sooner.
+  Thanks for reaching out regarding [topic of query].
+  I'll look into this and get back to you with an update or solution by [EOD/Tomorrow AM/Specific Timeframe].
 
-  Ref: INC[TICKET_NUMBER]
   [Signature]
 
-Incident Acknowledgment (New P3/P4):
-  Subject: Re: INC[TICKET_NUMBER] - Issue Reported
+Code Review Acknowledgment:
+  Subject: Re: Code Review for [Feature/Story ID]
   Body:
-  Dear [USER_NAME],
+  Hi [Sender Name],
 
-  Thank you for reporting Incident [TICKET_NUMBER] concerning "[ISSUE_DESCRIPTION]".
-  Our team is reviewing the issue and will provide an update or request more information within [SLA_RESPONSE_TIME_P3/P4, e.g., 4 business hours].
+  Thanks for the feedback on [Feature/Story ID]. I'll review your comments and address them.
+  I'll let you know if I have any questions.
 
-  Ref: INC[TICKET_NUMBER]
   [Signature]
 
-Incident Update Request (From User):
-  Subject: Re: Update on INC[TICKET_NUMBER]
+Deployment Notification Acknowledgment:
+  Subject: Re: Deployment Notification: [Change ID/Release Name]
   Body:
-  Dear [USER_NAME],
+  Hi Team,
 
-  Thank you for your inquiry regarding INC[TICKET_NUMBER].
-  We are currently [Provide brief status if known, e.g., "investigating the root cause", "working on a resolution"].
-  We will provide a more detailed update as soon as possible, typically within [STANDARD_UPDATE_INTERVAL, e.g., 2-4 hours for active incidents].
+  Noted. Thanks for the update on the [Change ID/Release Name] deployment.
 
-  Ref: INC[TICKET_NUMBER]
   [Signature]
-
-Request for More Information (To User for Incident):
-  Subject: Re: INC[TICKET_NUMBER] - Additional Information Needed
-  Body:
-  Dear [USER_NAME],
-
-  Regarding Incident [TICKET_NUMBER] (""[ISSUE_DESCRIPTION]""), to help us resolve this more effectively, could you please provide the following information:
-  - [Specific Question 1, e.g., When did this issue start?]
-  - [Specific Question 2, e.g., Are others experiencing this?]
-  - [Specific Question 3, e.g., Can you provide a screenshot of the error?]
-
-  Your prompt response will help us expedite the resolution.
-
-  Ref: INC[TICKET_NUMBER]
-  [Signature]
-
-## Service Request Management
-Service Request Acknowledgment:
-  Subject: Re: REQ[TICKET_NUMBER] - Service Request Received
-  Body:
-  Dear [USER_NAME],
-
-  We have received your Service Request REQ[TICKET_NUMBER] for "[ISSUE_DESCRIPTION]".
-  This request is now being processed. The typical fulfillment time for this type of request is [STANDARD_FULFILLMENT_TIME_FOR_REQUEST_TYPE, e.g., 2-3 business days].
-  We will notify you upon completion or if further information is required.
-
-  Ref: REQ[TICKET_NUMBER]
-  [Signature]
-
-# SLA EXPECTATIONS (For Agent's Context - actual enforcement might be in ServiceNow)
-Incident First Response Time Targets:
-  - P1: 15 minutes
-  - P2: 1 hour
-  - P3: 4 business hours
-  - P4: 8 business hours
-
-# KEYWORDS FOR IDENTIFICATION (Examples)
-Incident Keywords: "INC", "Incident", "Error", "Not working", "Down", "Failure", "Issue"
-Service Request Keywords: "REQ", "Request", "Access", "Install", "Setup", "Need"
-Change Request Keywords: "CHG", "Change", "RFC"
-Problem Keywords: "PRB", "Problem", "Root Cause"
