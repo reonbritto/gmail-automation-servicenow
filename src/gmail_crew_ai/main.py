@@ -54,3 +54,29 @@ def run():
 
 if __name__ == "__main__":
     sys.exit(run())  # Use the return value as the exit code
+
+# from crewai import Agent, Task, Crew, Process
+# from gmail_crew_ai.config.models import Agents as AgentModels
+# from gmail_crew_ai.config.models import Tasks as TaskModels
+# from langchain_openai import ChatOpenAI # Or your preferred LLM
+
+# def run():
+    # llm = ChatOpenAI(model="gpt-4-turbo") # Example LLM
+    # agents_config = AgentModels()
+    # tasks_config = TaskModels()
+
+    # response_agent = agents_config.response_generator(llm=llm) # Example agent instantiation
+
+    # Original task instantiation:
+    # email_task = tasks_config.response_task(agent=response_agent)
+    
+    # Corrected task instantiation:
+    # servicenow_task = tasks_config.servicenow_ticket_response_task(agent=response_agent)
+
+    # crew = Crew(
+    #     agents=[response_agent],
+    #     tasks=[servicenow_task], # Use the new task variable
+    #     process=Process.sequential,
+    #     verbose=2
+    # )
+    # ... rest of the run function
