@@ -4,7 +4,7 @@ response_task:
 
     For each email:
       - Analyze the content and determine if a response is needed.
-      - Generate a response ONLY for important personal or business emails that require your attention or input.
+      - Generate a response ONLY for important personal, business, or technical ServiceNow-related emails that require your attention or input.
       - DO NOT generate responses for newsletters, promotions, automated notifications, or emails that do not need a reply.
 
     For emails requiring a response:
