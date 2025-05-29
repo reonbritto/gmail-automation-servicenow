@@ -7,16 +7,15 @@ from typing import List, Dict, Any
 project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, project_root)
 
-from gmail_crew_ai.crew import GmailCrewAi
-from gmail_crew_ai.tools.gmail_reader import GmailReaderTool
-from gmail_crew_ai.tools.email_tools import EmailAnalysisTool, ResponseGeneratorTool, EmailSaverTool
+from gmail_crew_ai.tools.gmail_reader import read_gmail_emails
+from gmail_crew_ai.tools.email_tools import analyze_email_content, generate_email_response, save_email_results
 
 def run():
     """
-    Run the Gmail Crew AI to process emails and generate responses.
+    Run the Gmail email processing workflow.
     """
     try:
-        print("🔄 Starting Gmail Crew AI Email Processing...")
+        print("🔄 Starting Gmail Email Processing...")
         print("=" * 60)
         
         # Get number of emails to process
@@ -30,23 +29,15 @@ def run():
         
         print(f"\n📧 Processing up to {limit} unread emails from Gmail...")
         
-        # Initialize tools
-        gmail_reader = GmailReaderTool()
-        email_analyzer = EmailAnalysisTool()
-        response_generator = ResponseGeneratorTool()
-        email_saver = EmailSaverTool()
-        
         # Step 1: Read emails from Gmail
         print("\n1. 📥 Reading emails from Gmail...")
-        emails = gmail_reader._run(limit=limit)
+        result = read_gmail_emails(limit=limit)
         
-        if isinstance(emails, dict) and "error" in emails:
-            print(f"❌ Error reading emails: {emails['error']}")
+        if "error" in result:
+            print(f"❌ Error reading emails: {result['error']}")
             return
         
-        if isinstance(emails, dict) and "message" in emails:
-            print(f"ℹ️  {emails['message']}")
-            return
+        emails = result.get("emails", [])
         
         if not emails:
             print("ℹ️  No emails found to process.")
@@ -65,7 +56,7 @@ def run():
             
             # Step 2: Analyze email
             print(f"     📊 Analyzing email content...")
-            analysis = email_analyzer._run(email_data)
+            analysis = analyze_email_content(email_data)
             
             if "error" in analysis:
                 print(f"     ❌ Analysis error: {analysis['error']}")
@@ -79,7 +70,7 @@ def run():
             response_data = {"response_needed": False}
             if analysis.get("needs_response", False):
                 print(f"     ✍️  Generating response...")
-                response_data = response_generator._run(email_data, analysis)
+                response_data = generate_email_response(email_data, analysis)
                 
                 if "error" in response_data:
                     print(f"     ❌ Response generation error: {response_data['error']}")
@@ -91,7 +82,7 @@ def run():
             
             # Step 4: Save results
             print(f"     💾 Saving results...")
-            save_result = email_saver._run(email_data, analysis, response_data)
+            save_result = save_email_results(email_data, analysis, response_data)
             
             if "error" in save_result:
                 print(f"     ❌ Save error: {save_result['error']}")
@@ -140,37 +131,23 @@ def run():
 
 def train():
     """
-    Train the crew for 5 iterations.
+    Train functionality (placeholder for future crew training)
     """
-    inputs = {"limit": 3}  # Process 3 emails for training
-    try:
-        crew = GmailCrewAi().crew()
-        crew.train(n_iterations=5, inputs=inputs)
-    except Exception as e:
-        print(f"Training failed: {e}")
+    print("Training functionality not implemented in this version.")
 
 def replay():
     """
-    Replay the crew execution from a specific task.
+    Replay functionality (placeholder for future crew replay)
     """
-    try:
-        crew = GmailCrewAi().crew()
-        crew.replay(task_id="read_gmail_emails")
-    except Exception as e:
-        print(f"Replay failed: {e}")
+    print("Replay functionality not implemented in this version.")
 
 def test():
     """
-    Test the crew execution and return the results.
+    Test the email processing with a limited set
     """
-    inputs = {"limit": 2}  # Process 2 emails for testing
-    try:
-        crew = GmailCrewAi().crew()
-        result = crew.test(n_iterations=1, inputs=inputs)
-        return result
-    except Exception as e:
-        print(f"Test failed: {e}")
-        return None
+    print("🧪 Running test mode...")
+    # Process only 2 emails for testing
+    run()
 
 if __name__ == "__main__":
     run()
