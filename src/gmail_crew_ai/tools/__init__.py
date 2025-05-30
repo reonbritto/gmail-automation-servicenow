@@ -1,3 +1,5 @@
+# This file makes the tools directory a proper Python package
+
 from .gmail_tools import (
     GetUnreadEmailsTool, 
     SaveDraftTool, 

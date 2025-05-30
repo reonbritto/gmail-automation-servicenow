@@ -1,56 +1,118 @@
 #!/usr/bin/env python
 import sys
 import warnings
+import json
+from pathlib import Path
+from crewai import Crew, Agent, Task
+import yaml
+import os
 from dotenv import load_dotenv
+from gmail_crew_ai.tools.gmail_tools import fetch_unread_emails, save_email_draft
 
 # Add this line to suppress the warning
 warnings.filterwarnings("ignore", message=".*not a Python type.*")
 # Keep your existing warning filter
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 
-from gmail_crew_ai.crew import GmailCrewAi
+# Load environment variables
+load_dotenv()
+
+# Ensure output directory exists
+output_dir = Path("output")
+output_dir.mkdir(exist_ok=True)
+
+def load_config(config_type):
+    """Load configuration from YAML files."""
+    config_path = Path(__file__).parent / "config" / f"{config_type}.yaml"
+    with open(config_path, "r") as f:
+        return yaml.safe_load(f)
+
+def create_agents():
+    """Create agents based on configuration."""
+    agents_config = load_config("agents")
+    agents = {}
+    
+    for agent_id, agent_data in agents_config.items():
+        agents[agent_id] = Agent(
+            role=agent_data.get("role"),
+            goal=agent_data.get("goal"),
+            backstory=agent_data.get("backstory"),
+            verbose=agent_data.get("verbose", True),
+            allow_delegation=agent_data.get("allow_delegation", False),
+            memory=agent_data.get("memory", False)
+        )
+    
+    return agents
+
+def create_tasks(agents):
+    """Create tasks based on configuration."""
+    tasks_config = load_config("tasks")
+    tasks = []
+    
+    for task_id, task_data in tasks_config.items():
+        agent_id = task_data.get("agent")
+        if agent_id not in agents:
+            raise ValueError(f"Agent '{agent_id}' not found for task '{task_id}'")
+        
+        tasks.append(Task(
+            description=task_data.get("description"),
+            expected_output=task_data.get("expected_output"),
+            agent=agents[agent_id],
+            output_file=task_data.get("output_file")
+        ))
+    
+    return tasks
+
+def before_kickoff():
+    """Tasks to run before starting the crew."""
+    # Fetch unread emails and save to file
+    emails = fetch_unread_emails(max_emails=20)
+    with open(output_dir / "fetched_emails.json", "w") as f:
+        json.dump(emails, f, indent=2)
+    
+    print(f"Fetched {len(emails)} unread emails")
 
 def run():
-    """Run the Gmail Crew AI."""
-    try:
-        # Load environment variables
-        load_dotenv()
-        
-        # Get user input for number of emails to process
-        try:
-            email_limit = input("How many emails would you like to process? (default: 5): ")
-            if email_limit.strip() == "":
-                email_limit = 5
-            else:
-                email_limit = int(email_limit)
-                if email_limit <= 0:
-                    print("Number must be positive. Using default of 5.")
-                    email_limit = 5
-        except ValueError:
-            print("Invalid input. Using default of 5 emails.")
-            email_limit = 5
-        
-        print(f"Processing {email_limit} emails...")
-        
-        # Create and run the crew with the specified email limit
-        result = GmailCrewAi().crew().kickoff(inputs={'email_limit': email_limit})
-        
-        # Check if result is empty or None
-        if not result:
-            print("\nNo emails were processed. Inbox might be empty.")
-            return 0
-            
-        # Print the result in a clean way
-        if result:
-            print("\nCrew execution completed successfully! 🎉")
-            print("Results have been saved to the output directory.")
-            return 0  # Return success code
-        else:
-            print("\nCrew execution completed but no results were returned.")
-            return 0  # Still consider this a success
-    except Exception as e:
-        print(f"\nError: {e}")
-        return 1  # Return error code
+    """Main function to run the crew."""
+    print("Starting Gmail & ServiceNow automation...")
+    
+    # Run pre-tasks
+    before_kickoff()
+    
+    # Create agents and tasks
+    agents = create_agents()
+    tasks = create_tasks(agents)
+    
+    # Create and run the crew
+    crew = Crew(
+        agents=list(agents.values()),
+        tasks=tasks,
+        verbose=2
+    )
+    
+    # Execute the crew's tasks
+    results = crew.kickoff()
+    
+    print("Automation completed successfully!")
+    return results
+
+def train():
+    """Function to train the system with user preferences."""
+    print("Training system with user preferences...")
+    # Implementation for training would go here
+    pass
+
+def replay():
+    """Function to replay previous runs."""
+    print("Replaying previous runs...")
+    # Implementation for replaying would go here
+    pass
+
+def test():
+    """Function to run tests."""
+    print("Running tests...")
+    # Implementation for tests would go here
+    pass
 
 if __name__ == "__main__":
     sys.exit(run())  # Use the return value as the exit code
