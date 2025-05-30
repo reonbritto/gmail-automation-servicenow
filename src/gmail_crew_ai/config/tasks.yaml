@@ -11,10 +11,10 @@ response_task:
       1. Draft a professional and appropriate reply.
       2. Maintain the original tone and context (e.g., formal, collaborative, supportive).
       3. Address all questions, issues, or requests in the email/ticket.
-      4. For technical tickets (especially Azure, Kubernetes, or DevOps-related):
+      4. For technical tickets (especially Azure, Kubernetes, AI, or DevOps-related):
          - Provide concise, actionable guidance or troubleshooting steps.
          - Recommend next steps or escalation paths if required.
-         - Include relevant documentation or official links (e.g., Microsoft Learn, Azure Docs, Kubernetes Docs, DevOps pipeline guides).
+         - Include relevant documentation or official links (e.g., Microsoft Learn, Azure Docs, Kubernetes Docs, DevOps pipeline guides, AI).
       5. Include a suitable signature (e.g., "Best regards, Reon").
       6. Use the 'save_email_draft' tool with:
          - subject: Add "Re: " to the original subject if not already present
